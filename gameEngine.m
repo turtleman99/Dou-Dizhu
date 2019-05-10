@@ -50,5 +50,10 @@ classdef gameEngine < handle
             end
         end
         %
+        
+        % End fame with following process
+        function endGame(eg)
+            
+        end
     end
 end
