@@ -21,14 +21,17 @@ player_2_UI = pokerGameUI;
 player_2.currUI = player_2_UI;
 player_2.currUI.currPlayer = player_2;
 
+% player_0.currUI.currPlayer = player_0;
 player_0.currUI.player_1 = player_1;
 player_0.currUI.player_2 = player_2;
 
+% player_1.currUI.currPlayer = player_1;
 player_1.currUI.player_1 = player_0;
 player_1.currUI.player_2 = player_2;
 
-player_2.currUI.player_1 = player_1;
-player_2.currUI.player_2 = player_0;
+% player_2.currUI.currPlayer = player_2;
+player_2.currUI.player_1 = player_0;
+player_2.currUI.player_2 = player_1;
 
 
 % Create instance of 'gameEngine'

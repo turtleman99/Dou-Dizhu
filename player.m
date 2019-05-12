@@ -1,7 +1,7 @@
 classdef player < handle
     
     % properties of poker game engine
-    properties
+    properties (Access = public)
         avatar = 'icon_default.png';
         role = -1;      % -1-defult, 0-landlord, 1-peasant;
         cards = {};

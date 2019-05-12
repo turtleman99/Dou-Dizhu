@@ -66,7 +66,7 @@ classdef gameEngine < handle
             end
         end
         % Shuffle and distribute cards
-        function dsistributeCards(eg)
+        function distributeCards(eg)
             % Shuffle
             order = randperm(54);
             % distribute to all players
@@ -99,20 +99,53 @@ classdef gameEngine < handle
         end
         % update related variables in three players and their apps
         function update(eg)
-            % Card. 
-            if (eg.isStart == true)
-                eg.player_0_UI.CardNum_currplayer.Text = num2str(eg.player_0.cardNum);
-                eg.player_0_UI.CardNum_player_1.Text = num2str(eg.player_1.cardNum);
-                eg.player_0_UI.CardNum_player_2.Text = num2str(eg.player_2.cardNum);
-                drawnow
-                eg.player_1_UI.CardNum_currplayer.Text = num2str(eg.player_1.cardNum);
-                eg.player_1_UI.CardNum_player_1.Text = num2str(eg.player_0.cardNum);
-                eg.player_1_UI.CardNum_player_2.Text = num2str(eg.player_2.cardNum);
-                drawnow
-                eg.player_2_UI.CardNum_currplayer.Text = num2str(eg.player_2.cardNum);
-                eg.player_2_UI.CardNum_player_1.Text = num2str(eg.player_0.cardNum);
-                eg.player_2_UI.CardNum_player_2.Text = num2str(eg.player_1.cardNum);
-                drawnow
+            % display 'Ready' status
+            if (eg.isStart == false)
+                % player_0_UI
+                if (eg.player_0.currUI.player_1.isActive == true)
+                    eg.player_0.currUI.CardNum_player_1.Text = 'Ready';
+                end
+                if (eg.player_0.currUI.player_2.isActive == true)
+                    eg.player_0.currUI.CardNum_player_2.Text = 'Ready';
+                end
+                % player_1_UI
+                if (eg.player_1.currUI.player_1.isActive == true)
+                    eg.player_1.currUI.CardNum_player_1.Text = 'Ready';
+                end
+                if (eg.player_1.currUI.player_2.isActive == true)
+                    eg.player_1.currUI.CardNum_player_2.Text = 'Ready';
+                end
+                % player_2_UI
+                if (eg.player_2.currUI.player_1.isActive == true)
+                    eg.player_2.currUI.CardNum_player_1.Text = 'Ready';
+                end
+                if (eg.player_2.currUI.player_2.isActive == true)
+                    eg.player_2.currUI.CardNum_player_2.Text = 'Ready';
+                end
+            end
+            % Card num and Avatar 
+            if (eg.isStart == true)                
+                eg.player_0.currUI.CardNum_currplayer.Text = num2str(eg.player_0.currUI.currPlayer.cardNum);
+                eg.player_0.currUI.avatar_currplayer.ImageSource = eg.player_0.currUI.currPlayer.avatar;
+                eg.player_0.currUI.CardNum_player_1.Text = num2str(eg.player_0.currUI.player_1.cardNum);
+                eg.player_0.currUI.avatar_player_1.ImageSource = eg.player_0.currUI.player_1.avatar;
+                eg.player_0.currUI.CardNum_player_2.Text = num2str(eg.player_0.currUI.player_2.cardNum);
+                eg.player_0.currUI.avatar_player_2.ImageSource = eg.player_0.currUI.player_2.avatar;
+                drawnow;
+                eg.player_1.currUI.CardNum_currplayer.Text = num2str(eg.player_1.currUI.currPlayer.cardNum);
+                eg.player_1.currUI.avatar_currplayer.ImageSource = eg.player_1.currUI.currPlayer.avatar;
+                eg.player_1.currUI.CardNum_player_1.Text = num2str(eg.player_1.currUI.player_1.cardNum);
+                eg.player_1.currUI.avatar_player_1.ImageSource = eg.player_1.currUI.player_1.avatar;
+                eg.player_1.currUI.CardNum_player_2.Text = num2str(eg.player_1.currUI.player_2.cardNum);
+                eg.player_1.currUI.avatar_player_2.ImageSource = eg.player_1.currUI.player_2.avatar;
+                drawnow;
+                eg.player_2.currUI.CardNum_currplayer.Text = num2str(eg.player_2.currUI.currPlayer.cardNum);
+                eg.player_2.currUI.avatar_currplayer.ImageSource = eg.player_2.currUI.currPlayer.avatar;
+                eg.player_2.currUI.CardNum_player_1.Text = num2str(eg.player_2.currUI.player_1.cardNum);
+                eg.player_2.currUI.avatar_player_1.ImageSource = eg.player_2.currUI.player_1.avatar;
+                eg.player_2.currUI.CardNum_player_2.Text = num2str(eg.player_2.currUI.player_2.cardNum);
+                eg.player_2.currUI.avatar_player_2.ImageSource = eg.player_2.currUI.player_2.avatar;
+                drawnow;
             end
             % TODO: 
             % 1. chenck if cardNum and avatar are matched
@@ -126,7 +159,9 @@ classdef gameEngine < handle
         
         % start game with following process
         function startGame(eg)
-            % TD: update 'ready' to cardNum
+            eg.assignRole;
+            eg.distributeCards;
+            eg.update;
         end
         % End game with following process
         function endGame(eg)
