@@ -17,9 +17,13 @@ classdef gameEngine < handle
         isEnd = false;  % determine whether to end the game
         isStart = false; % determine whether start the game
         
+        % In order to sychronize, Distribute cards as soon as one player
+        % push 'Ready'. Then create cards compoents and invisible them
+        % until game started.
+        isDistribute = false; 
+        
         % import cards data
         cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));        
-        
         
     end
     
@@ -67,34 +71,36 @@ classdef gameEngine < handle
         end
         % Shuffle and distribute cards
         function distributeCards(eg)
-            % Shuffle
-            order = randperm(54);
-            % distribute to all players
-            for i = 1:17
-                indx = order(i);
-                eg.player_0.cards = [eg.player_0.cards, eg.cardsData{indx}];
-                eg.player_0.cardNum = eg.player_0.cardNum + 1;
-            end
-            for i = 18:34
-                indx = order(i);
-                eg.player_1.cards = [eg.player_1.cards, eg.cardsData{indx}];
-                eg.player_1.cardNum = eg.player_1.cardNum + 1;
-            end
-            for i = 35:51
-                indx = order(i);
-                eg.player_2.cards = [eg.player_2.cards, eg.cardsData{indx}];
-                eg.player_2.cardNum = eg.player_2.cardNum + 1;
-            end
-            % distribute to landlord
-            if (eg.landlord == 0)
-                eg.player_0.cards = [eg.player_0.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
-                eg.player_0.cardNum = eg.player_0.cardNum + 3;
-            elseif (eg.landlord == 1)
-                eg.player_1.cards = [eg.player_1.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
-                eg.player_1.cardNum = eg.player_1.cardNum + 3;
-            elseif (eg.landlord == 2)
-                eg.player_2.cards = [eg.player_2.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
-                eg.player_2.cardNum = eg.player_2.cardNum + 3;
+            if (eg.isDistribute == false)
+                % Shuffle
+                order = randperm(54);
+                % distribute to all players
+                for i = 1:17
+                    indx = order(i);
+                    eg.player_0.cards = [eg.player_0.cards, eg.cardsData{indx}];
+                    eg.player_0.cardNum = eg.player_0.cardNum + 1;
+                end
+                for i = 18:34
+                    indx = order(i);
+                    eg.player_1.cards = [eg.player_1.cards, eg.cardsData{indx}];
+                    eg.player_1.cardNum = eg.player_1.cardNum + 1;
+                end
+                for i = 35:51
+                    indx = order(i);
+                    eg.player_2.cards = [eg.player_2.cards, eg.cardsData{indx}];
+                    eg.player_2.cardNum = eg.player_2.cardNum + 1;
+                end
+                % distribute to landlord
+                if (eg.landlord == 0)
+                    eg.player_0.cards = [eg.player_0.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
+                    eg.player_0.cardNum = eg.player_0.cardNum + 3;
+                elseif (eg.landlord == 1)
+                    eg.player_1.cards = [eg.player_1.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
+                    eg.player_1.cardNum = eg.player_1.cardNum + 3;
+                elseif (eg.landlord == 2)
+                    eg.player_2.cards = [eg.player_2.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
+                    eg.player_2.cardNum = eg.player_2.cardNum + 3;
+                end
             end
         end
         % update related variables in three players and their apps
@@ -146,6 +152,8 @@ classdef gameEngine < handle
                 eg.player_2.currUI.CardNum_player_2.Text = num2str(eg.player_2.currUI.player_2.cardNum);
                 eg.player_2.currUI.avatar_player_2.ImageSource = eg.player_2.currUI.player_2.avatar;
                 drawnow;
+                % display card
+                eg.displayCard;
             end
             % TODO: 
             % 1. chenck if cardNum and avatar are matched
@@ -153,14 +161,14 @@ classdef gameEngine < handle
         end
         % display cards in three UIs(create components)
         function displayCard(eg)
+            % eg.player_0.cards
             
         end
         %
         
         % start game with following process
         function startGame(eg)
-            eg.assignRole;
-            eg.distributeCards;
+            eg.displayCard;
             eg.update;
         end
         % End game with following process
