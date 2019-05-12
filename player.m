@@ -5,12 +5,13 @@ classdef player < handle
         avatar = 'icon_default.png';
         role = -1;      % -1-defult, 0-landlord, 1-peasant;
         cards = {};     % store the distributed info from *.json
-        cards_img = {}; % store the UI components of cards
         cardNum = 0;
         selectNum = 0;  % remember to reset
         isActive = false;
         currUI;         % its own UI
-        % dispCards = false;
+        % row 1 store the components of cards; row 2 stores whether the
+        % card has selected; row 3 stores whether the cards has shoted
+        cards_img = {}; 
     end
     
     % methods that game engine has:

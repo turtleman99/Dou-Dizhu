@@ -161,7 +161,51 @@ classdef gameEngine < handle
         end
         % display cards in three UIs(create components)
         function displayCard(eg)
-            % eg.player_0.cards
+            % player_0 UI
+            if (eg.landlord == 0)
+                up = 20;
+            else
+                up = 17;
+            end 
+            mid = (eg.player_0.currUI.currPlayer.cardNum + 1)/2;
+            for i = 1 : up
+                if (eg.player_0.currUI.currPlayer.cards_img{3, i} == false)
+                    x = 565 + (i - mid) * 32;
+                    eg.player_0.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
+                    eg.player_0.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                end
+            end
+            % player_1 UI
+            if (eg.landlord == 1)
+                up = 20;
+            else
+                up = 17;
+            end 
+            mid = (eg.player_1.currUI.currPlayer.cardNum + 1)/2;
+            for i = 1 : up
+                if (eg.player_1.currUI.currPlayer.cards_img{3, i} == false)
+                    x = 565 + (i - mid) * 32;
+                    eg.player_1.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
+                    eg.player_1.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                end
+            end
+            % player_2 UI
+            if (eg.landlord == 2)
+                up = 20;
+            else
+                up = 17;
+            end 
+            mid = (eg.player_2.currUI.currPlayer.cardNum + 1)/2;
+            for i = 1 : up
+                if (eg.player_2.currUI.currPlayer.cards_img{3, i} == false)
+                    x = 565 + (i - mid) * 32;
+                    eg.player_2.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
+                    eg.player_2.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                end
+            end
+        end
+        % decide whose turn to shot cards
+        function nextTurn(eg)
             
         end
         %
