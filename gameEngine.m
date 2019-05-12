@@ -23,7 +23,9 @@ classdef gameEngine < handle
         isDistribute = false; 
         
         % import cards data
-        cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));        
+        cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));
+        % store the cards that has selected
+        cards_selected = {};
         
     end
     
@@ -31,28 +33,44 @@ classdef gameEngine < handle
     methods
         % In 0 stage, random assign Role; -1-defult, 0-landlord, 1-peasant;
         function assignRole(eg)
+            % eg.player_0.currUI.currPlayer.myTurn
             eg.landlord = randi(3)-1;
             switch eg.landlord
                 case 0
                     eg.player_0.role = 0;
+                    eg.player_0.currUI.currPlayer.myTurn = true;
                     eg.player_0.avatar = 'icon_landlord.png';
+                    
                     eg.player_1.role = 1;
+                    eg.player_1.currUI.currPlayer.myTurn = false;
                     eg.player_1.avatar = 'icon_farmer.png';
+                    
                     eg.player_2.role = 1;
+                    eg.player_2.currUI.currPlayer.myTurn = false;
                     eg.player_2.avatar = 'icon_farmer.png';
                 case 1
                     eg.player_0.role = 1;
+                    eg.player_0.currUI.currPlayer.myTurn = false;
                     eg.player_0.avatar = 'icon_farmer.png';
+                    
                     eg.player_1.role = 0;
+                    eg.player_1.currUI.currPlayer.myTurn = true;
                     eg.player_1.avatar = 'icon_landlord.png';
+                    
                     eg.player_2.role = 1;
+                    eg.player_2.currUI.currPlayer.myTurn = false;
                     eg.player_2.avatar = 'icon_farmer.png';
                 case 2
                     eg.player_0.role = 1;
+                    eg.player_0.currUI.currPlayer.myTurn = false;
                     eg.player_0.avatar = 'icon_farmer.png';
+                    
                     eg.player_1.role = 1;
+                    eg.player_1.currUI.currPlayer.myTurn = false;
                     eg.player_1.avatar = 'icon_farmer.png';
+                    
                     eg.player_2.role = 0;
+                    eg.player_2.currUI.currPlayer.myTurn = true;
                     eg.player_2.avatar = 'icon_landlord.png';
             end
         end
@@ -103,7 +121,8 @@ classdef gameEngine < handle
                 end
             end
         end
-        % update related variables in three players and their apps
+        % update related variables in three players and their apps: lable,
+        % display cards
         function update(eg)
             % display 'Ready' status
             if (eg.isStart == false)
@@ -168,11 +187,13 @@ classdef gameEngine < handle
                 up = 17;
             end 
             mid = (eg.player_0.currUI.currPlayer.cardNum + 1)/2;
+            temp_index = 1;
             for i = 1 : up
                 if (eg.player_0.currUI.currPlayer.cards_img{3, i} == false)
-                    x = 565 + (i - mid) * 32;
+                    x = 565 + (temp_index - mid) * 32;
                     eg.player_0.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
                     eg.player_0.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                    temp_index = temp_index + 1;
                 end
             end
             % player_1 UI
@@ -182,11 +203,13 @@ classdef gameEngine < handle
                 up = 17;
             end 
             mid = (eg.player_1.currUI.currPlayer.cardNum + 1)/2;
+            temp_index = 1;
             for i = 1 : up
                 if (eg.player_1.currUI.currPlayer.cards_img{3, i} == false)
-                    x = 565 + (i - mid) * 32;
+                    x = 565 + (temp_index - mid) * 32;
                     eg.player_1.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
                     eg.player_1.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                    temp_index = temp_index + 1;
                 end
             end
             % player_2 UI
@@ -196,22 +219,84 @@ classdef gameEngine < handle
                 up = 17;
             end 
             mid = (eg.player_2.currUI.currPlayer.cardNum + 1)/2;
+            temp_index = 1;
             for i = 1 : up
                 if (eg.player_2.currUI.currPlayer.cards_img{3, i} == false)
-                    x = 565 + (i - mid) * 32;
+                    x = 565 + (temp_index - mid) * 32;
                     eg.player_2.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
                     eg.player_2.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                    temp_index = temp_index + 1;
                 end
             end
         end
         % decide whose turn to shot cards
         function nextTurn(eg)
-            
+            if (eg.player_0.currUI.currPlayer.myTurn == true)
+                eg.player_1.currUI.currPlayer.myTurn = true;
+                eg.player_1.currUI.ShotButton.Visible = true; 
+                eg.player_1.currUI.PassButton.Visible = true;
+                
+                eg.player_2.currUI.currPlayer.myTurn = false;
+                eg.player_2.currUI.ShotButton.Visible = false; 
+                eg.player_2.currUI.PassButton.Visible = false;
+                
+                eg.player_0.currUI.currPlayer.myTurn = false;
+                eg.player_0.currUI.ShotButton.Visible = false; 
+                eg.player_0.currUI.PassButton.Visible = false;
+            elseif (eg.player_1.currUI.currPlayer.myTurn == true)
+                eg.player_2.currUI.currPlayer.myTurn = true;
+                eg.player_2.currUI.ShotButton.Visible = true; 
+                eg.player_2.currUI.PassButton.Visible = true;
+                
+                eg.player_0.currUI.currPlayer.myTurn = false;
+                eg.player_0.currUI.ShotButton.Visible = false; 
+                eg.player_0.currUI.PassButton.Visible = false;
+                
+                eg.player_1.currUI.currPlayer.myTurn = false;
+                eg.player_1.currUI.ShotButton.Visible = false; 
+                eg.player_1.currUI.PassButton.Visible = false;
+            elseif (eg.player_2.currUI.currPlayer.myTurn == true)
+                eg.player_0.currUI.currPlayer.myTurn = true;
+                eg.player_0.currUI.ShotButton.Visible = true; 
+                eg.player_0.currUI.PassButton.Visible = true;
+                
+                eg.player_1.currUI.currPlayer.myTurn = false;
+                eg.player_1.currUI.ShotButton.Visible = false; 
+                eg.player_1.currUI.PassButton.Visible = false;
+                
+                eg.player_2.currUI.currPlayer.myTurn = false;
+                eg.player_2.currUI.ShotButton.Visible = false; 
+                eg.player_2.currUI.PassButton.Visible = false;
+            end
         end
         %
         
         % start game with following process
         function startGame(eg)
+            % Start: control the 'visible' of Shot and Pass button
+            if (eg.landlord == 0)
+                eg.player_0.currUI.ShotButton.Visible = true; 
+                eg.player_0.currUI.PassButton.Visible = true;
+                eg.player_1.currUI.ShotButton.Visible = false; 
+                eg.player_1.currUI.PassButton.Visible = false;
+                eg.player_2.currUI.ShotButton.Visible = false; 
+                eg.player_2.currUI.PassButton.Visible = false;
+            elseif (eg.landlord == 1)
+                eg.player_1.currUI.ShotButton.Visible = true; 
+                eg.player_1.currUI.PassButton.Visible = true;
+                eg.player_0.currUI.ShotButton.Visible = false; 
+                eg.player_0.currUI.PassButton.Visible = false;
+                eg.player_2.currUI.ShotButton.Visible = false; 
+                eg.player_2.currUI.PassButton.Visible = false;
+            elseif (eg.landlord == 2)
+                eg.player_2.currUI.ShotButton.Visible = true; 
+                eg.player_2.currUI.PassButton.Visible = true;
+                eg.player_1.currUI.ShotButton.Visible = false; 
+                eg.player_1.currUI.PassButton.Visible = false;
+                eg.player_0.currUI.ShotButton.Visible = false; 
+                eg.player_0.currUI.PassButton.Visible = false;
+            end
+
             eg.displayCard;
             eg.update;
         end
