@@ -1,6 +1,6 @@
 {
-    "coloredJoker":["W", "coloredJoker", "./resourse/cards/coloredJoker.jpg"],
-    "wbJoker":["w", "wbJoker","./resourse/cards/wbJoker.jpg"],
+    "coloredJoker":["W", "coloredJoker", "./resourse/cards/coloredJoker.png"],
+    "wbJoker":["w", "wbJoker","./resourse/cards/wbJoker.png"],
 
     "clubs2":[ "2", "clubs","./resourse/cards/clubs2.png"],
     "clubs3":[ "3", "clubs","./resourse/cards/clubs3.png"],
