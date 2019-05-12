@@ -12,11 +12,14 @@ classdef gameEngine < handle
         
         landlord = -1   % -1 -> defalut        
         whoseTurn = -1; % -1 -> defalut
-        % import cards data
-        cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));        
         cardNum = 54;   % Total card Num = 54       
         winner = -1;    % winner=-1 -> have not determined winner
         isEnd = false;  % determine whether to end the game
+        isStart = false; % determine whether start the game
+        
+        % import cards data
+        cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));        
+        
         
     end
     
@@ -97,18 +100,20 @@ classdef gameEngine < handle
         % update related variables in three players and their apps
         function update(eg)
             % Card. 
-            eg.player_0_UI.CardNum_currplayer.Text = num2str(eg.player_0.cardNum);
-            eg.player_0_UI.CardNum_player_1.Text = num2str(eg.player_1.cardNum);
-            eg.player_0_UI.CardNum_player_2.Text = num2str(eg.player_2.cardNum);
-            drawnow
-            eg.player_1_UI.CardNum_currplayer.Text = num2str(eg.player_1.cardNum);
-            eg.player_1_UI.CardNum_player_1.Text = num2str(eg.player_0.cardNum);
-            eg.player_1_UI.CardNum_player_2.Text = num2str(eg.player_2.cardNum);
-            drawnow
-            eg.player_2_UI.CardNum_currplayer.Text = num2str(eg.player_2.cardNum);
-            eg.player_2_UI.CardNum_player_1.Text = num2str(eg.player_0.cardNum);
-            eg.player_2_UI.CardNum_player_2.Text = num2str(eg.player_1.cardNum);
-            drawnow
+            if (eg.isStart == true)
+                eg.player_0_UI.CardNum_currplayer.Text = num2str(eg.player_0.cardNum);
+                eg.player_0_UI.CardNum_player_1.Text = num2str(eg.player_1.cardNum);
+                eg.player_0_UI.CardNum_player_2.Text = num2str(eg.player_2.cardNum);
+                drawnow
+                eg.player_1_UI.CardNum_currplayer.Text = num2str(eg.player_1.cardNum);
+                eg.player_1_UI.CardNum_player_1.Text = num2str(eg.player_0.cardNum);
+                eg.player_1_UI.CardNum_player_2.Text = num2str(eg.player_2.cardNum);
+                drawnow
+                eg.player_2_UI.CardNum_currplayer.Text = num2str(eg.player_2.cardNum);
+                eg.player_2_UI.CardNum_player_1.Text = num2str(eg.player_0.cardNum);
+                eg.player_2_UI.CardNum_player_2.Text = num2str(eg.player_1.cardNum);
+                drawnow
+            end
             % TODO: 
             % 1. chenck if cardNum and avatar are matched
             % 2. update card display
