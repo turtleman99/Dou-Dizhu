@@ -12,6 +12,7 @@ classdef gameEngine < handle
         
         landlord = -1   % -1 -> defalut        
         whoseTurn = -1; % -1 -> defalut
+        passNum = 0;    % passNum should not more than 2
         cardNum = 54;   % Total card Num = 54       
         winner = -1;    % winner=-1 -> have not determined winner
         isEnd = false;  % determine whether to end the game
@@ -24,8 +25,12 @@ classdef gameEngine < handle
         
         % import cards data
         cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));
-        % store the cards that has selected
-        cards_selected = {};
+        % store the cards that has shotted: 0 -> last turn, 1-> curr turn
+        % row 1: num
+        % row 2: lable
+        % row 3: img source
+        cards_shotted_0 = {};
+        cards_shotted_1 = {};
         
     end
     
@@ -79,12 +84,15 @@ classdef gameEngine < handle
             if (eg.player_0.cardNum == 0)
                 eg.winner = 0;
                 eg.isEnd = true;
+                eg.endGame;
             elseif (eg.player_1.cardNum == 0)
                 eg.winner = 1;
                 eg.isEnd = true;
+                eg.endGame;
             elseif (eg.player_2.cardNum == 0)
                 eg.winner = 2;
                 eg.isEnd = true;
+                eg.endGame;
             end
         end
         % Shuffle and distribute cards
@@ -178,7 +186,7 @@ classdef gameEngine < handle
             % 1. chenck if cardNum and avatar are matched
             % 2. update card display
         end
-        % display cards in three UIs(create components)
+        % display handcards in three UIs(create components)
         function displayCard(eg)
             % player_0 UI
             if (eg.landlord == 0)
@@ -229,6 +237,26 @@ classdef gameEngine < handle
                 end
             end
         end
+        % Display the shotted cards in other players' UIs
+        function dispShotCards(eg)
+            [nr, shotNum] = size(eg.cards_shotted_1);
+            mid = (shotNum + 1)/2;
+            % invisble last turn card
+            for i = 1 : 20
+                eg.player_0.currUI.currDispCards{1, i}.Visible = false;
+                eg.player_1.currUI.currDispCards{1, i}.Visible = false;
+                eg.player_2.currUI.currDispCards{1, i}.Visible = false;
+            end
+            % Then display shotted cards in three UIs
+            for i = 1 : shotNum
+                eg.player_0.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_1{3, shotNum - i + 1};
+                eg.player_0.currUI.currDispCards{1, fix(10.5-(i-mid))}.Visible = true;
+                eg.player_1.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_1{3, shotNum - i + 1};
+                eg.player_1.currUI.currDispCards{1, fix(10.5-(i-mid))}.Visible = true;
+                eg.player_2.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_1{3, shotNum - i + 1};
+                eg.player_2.currUI.currDispCards{1, fix(10.5-(i-mid))}.Visible = true;
+            end
+        end
         % decide whose turn to shot cards
         function nextTurn(eg)
             if (eg.player_0.currUI.currPlayer.myTurn == true)
@@ -273,10 +301,18 @@ classdef gameEngine < handle
         
         % start game with following process
         function startGame(eg)
+            % Start: Enable the Shot and Pass button
+            eg.player_0.currUI.ShotButton.Enable = true;   
+            eg.player_0.currUI.PassButton.Enable = true;
+            eg.player_1.currUI.ShotButton.Enable = true;   
+            eg.player_1.currUI.PassButton.Enable = true;
+            eg.player_2.currUI.ShotButton.Enable = true;   
+            eg.player_2.currUI.PassButton.Enable = true;
             % Start: control the 'visible' of Shot and Pass button
             if (eg.landlord == 0)
                 eg.player_0.currUI.ShotButton.Visible = true; 
                 eg.player_0.currUI.PassButton.Visible = true;
+                eg.player_0.currUI.PassButton.Enable = false;
                 eg.player_1.currUI.ShotButton.Visible = false; 
                 eg.player_1.currUI.PassButton.Visible = false;
                 eg.player_2.currUI.ShotButton.Visible = false; 
@@ -284,6 +320,7 @@ classdef gameEngine < handle
             elseif (eg.landlord == 1)
                 eg.player_1.currUI.ShotButton.Visible = true; 
                 eg.player_1.currUI.PassButton.Visible = true;
+                eg.player_2.currUI.PassButton.Enable = false;
                 eg.player_0.currUI.ShotButton.Visible = false; 
                 eg.player_0.currUI.PassButton.Visible = false;
                 eg.player_2.currUI.ShotButton.Visible = false; 
@@ -291,6 +328,7 @@ classdef gameEngine < handle
             elseif (eg.landlord == 2)
                 eg.player_2.currUI.ShotButton.Visible = true; 
                 eg.player_2.currUI.PassButton.Visible = true;
+                eg.player_2.currUI.PassButton.Enable = false;
                 eg.player_1.currUI.ShotButton.Visible = false; 
                 eg.player_1.currUI.PassButton.Visible = false;
                 eg.player_0.currUI.ShotButton.Visible = false; 
@@ -302,6 +340,7 @@ classdef gameEngine < handle
         end
         % End game with following process
         function endGame(eg)
+            % unable all buttons
             if (eg.isEnd)
                 
             end

@@ -10,13 +10,17 @@ classdef player < handle
         isActive = false;
         myTurn = false;
         currUI;         % its own UI
-        % row 1 store the components of cards; row 2 stores whether the
-        % card has selected; row 3 stores whether the cards has shoted
+        
+        % row 1 stores the components of cards;
+        % row 2 stores whether the card has selected;
+        % row 3 stores whether the cards has shotted;
+        % row 4 stores the # of cards;
+        % row 5 stores the lable 
         cards_img = {}; 
     end
     
     % methods that game engine has:
     methods
-        
+        % Kinda empty an stage 0; easy for iteration
     end
 end
