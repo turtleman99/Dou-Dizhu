@@ -14,8 +14,9 @@ classdef player < handle
         % row 1 stores the components of cards;
         % row 2 stores whether the card has selected;
         % row 3 stores whether the cards has shotted;
-        % row 4 stores the # of cards;
+        % row 4 stores the str# of cards;
         % row 5 stores the lable 
+        % row 6 stores the # of cards
         cards_img = {}; 
     end
     

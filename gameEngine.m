@@ -26,9 +26,10 @@ classdef gameEngine < handle
         % import cards data
         cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));
         % store the cards that has shotted: 0 -> last turn, 1-> curr turn
-        % row 1: num
+        % row 1: str num
         % row 2: lable
         % row 3: img source
+        % row 4l num
         cards_shotted_0 = {};
         cards_shotted_1 = {};
         
@@ -95,6 +96,30 @@ classdef gameEngine < handle
                 eg.endGame;
             end
         end
+        % Sort hand cards of players
+        function sortCard(eg, player)
+            len = player.cardNum;
+            for i = 1 : len
+                for j = 1 : len-i
+                    if (player.cards{4, j} > player.cards{4, j+1})
+                        temp_1 = player.cards{1, j+1};
+                        temp_2 = player.cards{2, j+1};
+                        temp_3 = player.cards{3, j+1};
+                        temp_4 = player.cards{4, j+1};
+                        
+                        player.cards{1, j+1} = player.cards{1, j};
+                        player.cards{2, j+1} = player.cards{2, j};
+                        player.cards{3, j+1} = player.cards{3, j};
+                        player.cards{4, j+1} = player.cards{4, j};
+                        
+                        player.cards{1, j} = temp_1;
+                        player.cards{2, j} = temp_2;
+                        player.cards{3, j} = temp_3;
+                        player.cards{4, j} = temp_4;
+                    end
+                end
+            end
+        end
         % Shuffle and distribute cards
         function distributeCards(eg)
             if (eg.isDistribute == false)
@@ -127,6 +152,10 @@ classdef gameEngine < handle
                     eg.player_2.cards = [eg.player_2.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
                     eg.player_2.cardNum = eg.player_2.cardNum + 3;
                 end
+                % sort the hand cards of players
+                eg.sortCard(eg.player_0);
+                eg.sortCard(eg.player_1);
+                eg.sortCard(eg.player_2);
             end
         end
         % update related variables in three players and their apps: lable,
