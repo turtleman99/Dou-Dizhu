@@ -10,6 +10,9 @@ classdef gameEngine < handle
         player_2
         player_2_UI
         
+        % store the instance of poker game rule
+        rule
+        
         landlord = -1   % -1 -> defalut        
         whoseTurn = -1; % -1 -> defalut
         passNum = 0;    % passNum should not more than 2
@@ -25,6 +28,7 @@ classdef gameEngine < handle
         
         % import cards data
         cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));
+        
         % store the cards that has shotted: 0 -> last turn, 1-> curr turn
         % row 1: str num
         % row 2: lable
@@ -32,6 +36,12 @@ classdef gameEngine < handle
         % row 4l num
         cards_shotted_0 = {};
         cards_shotted_1 = {};
+        % used to compare curr turn and last turn 
+        cards_type_0;
+        cards_value_0;
+        cards_type_1;
+        cards_value_1;
+        
         
     end
     
