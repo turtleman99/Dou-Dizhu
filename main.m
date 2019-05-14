@@ -1,6 +1,5 @@
 close all;
 clear all;
-rule = struct2cell(jsondecode(fileread('rule.json')));
 
 % Create instances of 'player'
 player_0 = player;
@@ -33,12 +32,17 @@ player_1.currUI.player_2 = player_2;
 player_2.currUI.player_1 = player_0;
 player_2.currUI.player_2 = player_1;
 
+% Create the instance of pokerRule
+rule = pokerRule;
 
 % Create instance of 'gameEngine'
 ge = gameEngine;
 ge.player_0 = player_0;
 ge.player_1 = player_1;
 ge.player_2 = player_2;
+ge.rule = rule;
+
+rule.gameEngine = ge;
 
 % set gameEngine to different UIs
 player_0.currUI.gameEngine = ge;
