@@ -36,10 +36,12 @@ classdef gameEngine < handle
         % row 4l num
         cards_shotted_0 = {};
         cards_shotted_1 = {};
+        cards_selected = {};
         % used to compare curr turn and last turn 
         cards_type_0;
         cards_value_0;
         cards_type_1;
+        % -2 -> not found; -1 -> unkown type
         cards_value_1;
         
         
@@ -93,15 +95,15 @@ classdef gameEngine < handle
         % determine which player is winner
         function determineWinner(eg)
             if (eg.player_0.cardNum == 0)
-                eg.winner = 0;
+                eg.winner = eg.player_0.role;
                 eg.isEnd = true;
                 eg.endGame;
             elseif (eg.player_1.cardNum == 0)
-                eg.winner = 1;
+                g.winner = eg.player_1.role;
                 eg.isEnd = true;
                 eg.endGame;
             elseif (eg.player_2.cardNum == 0)
-                eg.winner = 2;
+                g.winner = eg.player_2.role;
                 eg.isEnd = true;
                 eg.endGame;
             end
@@ -381,7 +383,34 @@ classdef gameEngine < handle
         function endGame(eg)
             % unable all buttons
             if (eg.isEnd)
-                
+                % invisible all shotted cards
+                for i = 1 : 20
+                    eg.player_0.currUI.currDispCards{1, i}.Visible = false;
+                    eg.player_1.currUI.currDispCards{1, i}.Visible = false;
+                    eg.player_2.currUI.currDispCards{1, i}.Visible = false;
+                end
+                % unable all buttons
+                eg.player_0.currUI.ReadyButton.Visible = false;
+                eg.player_0.currUI.ShotButton.Visible = false;
+                eg.player_0.currUI.PassButton.Visible = false;
+                eg.player_1.currUI.ReadyButton.Visible = false;
+                eg.player_1.currUI.ShotButton.Visible = false;
+                eg.player_1.currUI.PassButton.Visible = false;
+                eg.player_2.currUI.ReadyButton.Visible = false;
+                eg.player_2.currUI.ShotButton.Visible = false;
+                eg.player_2.currUI.PassButton.Visible = false;
+                if (eg.winner == 1)
+                    msg = 'Peasants Win!';
+                elseif (eg.winner == 0)
+                    msg = 'Landlord Win!';
+                end
+                % Show winner info
+                eg.player_0.currUI.winLabel.Text = msg;
+                eg.player_0.currUI.winLabel.Visible = true;
+                eg.player_1.currUI.winLabel.Text = msg;
+                eg.player_1.currUI.winLabel.Visible = true;
+                eg.player_2.currUI.winLabel.Text = msg;
+                eg.player_2.currUI.winLabel.Visible = true;
             end
         end
     end

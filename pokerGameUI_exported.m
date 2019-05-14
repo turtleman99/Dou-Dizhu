@@ -14,6 +14,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         avatar_currplayer   matlab.ui.control.Image
         avatar_player_1     matlab.ui.control.Image
         CardNum_currplayer  matlab.ui.control.Label
+        winLabel            matlab.ui.control.Label
     end
 
     
@@ -79,8 +80,9 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.currPlayer.cards_img{1, i} = uiimage(app.UIFigure,'ImageSource', app.currPlayer.cards{3, i});
                 app.currPlayer.cards_img{2, i} = false; % is seleted
                 app.currPlayer.cards_img{3, i} = false; % is shotted
-                app.currPlayer.cards_img{4, i} = app.currPlayer.cards{1, i}; % the number 
+                app.currPlayer.cards_img{4, i} = app.currPlayer.cards{1, i}; % the str number 
                 app.currPlayer.cards_img{5, i} = app.currPlayer.cards{2, i}; % the lable
+                app.currPlayer.cards_img{6, i} = app.currPlayer.cards{4, i}; % the num
                 app.currPlayer.cards_img{1, i}.ImageClickedFcn = {@app.selectCard, i};
                 app.currPlayer.cards_img{1, i}.Visible = false;
             end
@@ -102,42 +104,78 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
 
         % Button pushed function: ShotButton
         function ShotButtonPushed(app, event)
-            % reset app.gameEngine.passNum
-            app.gameEngine.player_0.currUI.PassButton.Enable = true;
-            app.gameEngine.player_1.currUI.PassButton.Enable = true;
-            app.gameEngine.player_2.currUI.PassButton.Enable = true;
-            app.gameEngine.passNum = 0;
-            
-            mid = (1 + app.currPlayer.selectNum)/2;
+            % init gameEngine's cards_shotted
+            if (app.currPlayer.shotOnce == false)
+                app.gameEngine.cards_shotted_0 = app.gameEngine.cards_shotted_1;
+                app.gameEngine.cards_type_0 = app.gameEngine.cards_type_1;
+                app.gameEngine.cards_value_0 = app.gameEngine.cards_value_1;
+                app.gameEngine.cards_shotted_1 = {};
+                app.gameEngine.cards_type_1 = '';
+                app.gameEngine.cards_value_1 = 0;
+            end
+            app.currPlayer.shotOnce = true;
+            % compare selected cards and last turn cards
             if (app.currPlayer.role == 0)
                 up = 20;
             elseif (app.currPlayer.role == 1)
                 up = 17;
             end
             indx_selected = 1;
-            % init gameEngine's cards_shotted
-            app.gameEngine.cards_shotted_0 = app.gameEngine.cards_shotted_1;
-            app.gameEngine.cards_shotted_1 = {};
+            % init gameEngine's cards_selected
+            app.gameEngine.cards_selected = {};
             for i = 1: up
                 % if selected && not shotted
                 if (app.currPlayer.cards_img{2, i} == true && app.currPlayer.cards_img{3, i} == false) 
-                    app.currPlayer.cards_img{1, i}.Visible = false;
-                    app.currPlayer.cards_img{3, i} = true;  % is shotted
-                    % Store them to gameEngine's cards_shotted = {};
-                    app.gameEngine.cards_shotted_1{1, indx_selected} = app.currPlayer.cards_img{4, i}; % num
-                    app.gameEngine.cards_shotted_1{2, indx_selected} = app.currPlayer.cards_img{5, i}; % lable
-                    app.gameEngine.cards_shotted_1{3, indx_selected} = app.currPlayer.cards_img{1, i}.ImageSource; % img source
+                    app.gameEngine.cards_selected{1, indx_selected} = app.currPlayer.cards_img{4, i}; % str num
+                    app.gameEngine.cards_selected{2, indx_selected} = app.currPlayer.cards_img{5, i}; % lable
+                    app.gameEngine.cards_selected{3, indx_selected} = app.currPlayer.cards_img{1, i}.ImageSource; % img source
+                    app.gameEngine.cards_selected{4, indx_selected} = app.currPlayer.cards_img{6, i}; % num
                     indx_selected = indx_selected + 1;
                 end
             end
-            % update cardNum
-            app.currPlayer.cardNum = app.currPlayer.cardNum - app.currPlayer.selectNum;
-            app.currPlayer.selectNum = 0;
-            app.gameEngine.update;
-            % show shotted cards in three UIs
-            app.gameEngine.dispShotCards;
-            app.gameEngine.determineWinner;
-            app.gameEngine.nextTurn;
+            
+            % use rule to compare
+            app.gameEngine.rule.compare_poker(app.gameEngine.cards_shotted_0, app.gameEngine.cards_selected);
+            
+            if (app.gameEngine.rule.compare_result > 0)
+            % reset app.gameEngine.passNum
+                app.gameEngine.player_0.currUI.PassButton.Enable = true;
+                app.gameEngine.player_1.currUI.PassButton.Enable = true;
+                app.gameEngine.player_2.currUI.PassButton.Enable = true;
+                app.gameEngine.passNum = 0;
+                
+                if (app.currPlayer.role == 0)
+                    up = 20;
+                elseif (app.currPlayer.role == 1)
+                    up = 17;
+                end
+                indx_selected = 1;
+                for i = 1: up
+                    % if selected && not shotted
+                    if (app.currPlayer.cards_img{2, i} == true && app.currPlayer.cards_img{3, i} == false) 
+                        app.currPlayer.cards_img{1, i}.Visible = false;
+                        app.currPlayer.cards_img{3, i} = true;  % is shotted
+                        % Store them to gameEngine's cards_shotted = {};
+                        app.gameEngine.cards_shotted_1{1, indx_selected} = app.currPlayer.cards_img{4, i}; % str num
+                        app.gameEngine.cards_shotted_1{2, indx_selected} = app.currPlayer.cards_img{5, i}; % lable
+                        app.gameEngine.cards_shotted_1{3, indx_selected} = app.currPlayer.cards_img{1, i}.ImageSource; % img source
+                        app.gameEngine.cards_shotted_1{4, indx_selected} = app.currPlayer.cards_img{6, i}; % num
+                        indx_selected = indx_selected + 1;
+                    end
+                end
+                % update cardNum
+                app.currPlayer.cardNum = app.currPlayer.cardNum - app.currPlayer.selectNum;
+                app.currPlayer.selectNum = 0;
+                app.gameEngine.update;
+                % show shotted cards in three UIs
+                app.gameEngine.dispShotCards;
+                app.gameEngine.determineWinner;
+                % reset compare_result
+                app.gameEngine.rule.compare_result = 0;
+                app.currPlayer.shotOnce = false;
+                app.gameEngine.cards_selected = {};
+                app.gameEngine.nextTurn;
+            end
         end
 
         % Button pushed function: PassButton
@@ -145,6 +183,9 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.gameEngine.passNum = app.gameEngine.passNum + 1;
             app.gameEngine.nextTurn;
             if (app.gameEngine.passNum >= 2)
+                app.gameEngine.cards_shotted_1 = {};
+                app.gameEngine.cards_type_1 = '';
+                app.gameEngine.cards_value_1 = 0;
                 if (app.gameEngine.player_0.currUI.currPlayer.myTurn == true)
                     app.gameEngine.player_0.currUI.PassButton.Enable = false; 
                 elseif (app.gameEngine.player_1.currUI.currPlayer.myTurn == true)
@@ -232,6 +273,14 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.CardNum_currplayer = uilabel(app.UIFigure);
             app.CardNum_currplayer.Position = [53 138 65 22];
             app.CardNum_currplayer.Text = 'Not ready!';
+
+            % Create winLabel
+            app.winLabel = uilabel(app.UIFigure);
+            app.winLabel.HorizontalAlignment = 'center';
+            app.winLabel.FontSize = 50;
+            app.winLabel.FontColor = [1 0 0];
+            app.winLabel.Position = [493 512 288 65];
+            app.winLabel.Text = {'AAAAA win !'; ''};
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
