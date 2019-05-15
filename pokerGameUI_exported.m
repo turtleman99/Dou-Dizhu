@@ -111,9 +111,9 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.gameEngine.cards_value_0 = app.gameEngine.cards_value_1;
                 app.gameEngine.cards_shotted_1 = {};
                 app.gameEngine.cards_type_1 = '';
-                app.gameEngine.cards_value_1 = 0;
+                app.gameEngine.cards_value_1 = 0; % assume not found
+                app.currPlayer.shotOnce = true;
             end
-            app.currPlayer.shotOnce = true;
             % compare selected cards and last turn cards
             if (app.currPlayer.role == 0)
                 up = 20;
@@ -138,7 +138,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.gameEngine.rule.compare_poker(app.gameEngine.cards_shotted_0, app.gameEngine.cards_selected);
             
             if (app.gameEngine.rule.compare_result > 0)
-            % reset app.gameEngine.passNum
+                % reset app.gameEngine.passNum
                 app.gameEngine.player_0.currUI.PassButton.Enable = true;
                 app.gameEngine.player_1.currUI.PassButton.Enable = true;
                 app.gameEngine.player_2.currUI.PassButton.Enable = true;
@@ -170,10 +170,20 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 % show shotted cards in three UIs
                 app.gameEngine.dispShotCards;
                 app.gameEngine.determineWinner;
-                % reset compare_result
-                app.gameEngine.rule.compare_result = 0;
                 app.currPlayer.shotOnce = false;
                 app.gameEngine.cards_selected = {};
+                % debugging
+                z = 'Curr type: ' 
+                app.gameEngine.cards_type_1
+                x = 'prev type: '
+                app.gameEngine.cards_type_0
+                y = 'Curr value: '
+                app.gameEngine.cards_value_1
+                f = 'prev value: '
+                app.gameEngine.cards_value_0
+                g = 'Compare result: '
+                app.gameEngine.rule.compare_result
+                % debugging
                 app.gameEngine.nextTurn;
             end
         end
@@ -185,7 +195,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             if (app.gameEngine.passNum >= 2)
                 app.gameEngine.cards_shotted_1 = {};
                 app.gameEngine.cards_type_1 = '';
-                app.gameEngine.cards_value_1 = 0;
+                app.gameEngine.cards_value_1 = -2; % assume not found at first
                 if (app.gameEngine.player_0.currUI.currPlayer.myTurn == true)
                     app.gameEngine.player_0.currUI.PassButton.Enable = false; 
                 elseif (app.gameEngine.player_1.currUI.currPlayer.myTurn == true)
@@ -194,6 +204,8 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                     app.gameEngine.player_2.currUI.PassButton.Enable = false; 
                 end
             end
+            % when pass, clean the selected
+            app.gameEngine.cards_selected = {};
         end
     end
 
@@ -279,6 +291,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.winLabel.HorizontalAlignment = 'center';
             app.winLabel.FontSize = 50;
             app.winLabel.FontColor = [1 0 0];
+            app.winLabel.Visible = 'off';
             app.winLabel.Position = [493 512 288 65];
             app.winLabel.Text = {'AAAAA win !'; ''};
 

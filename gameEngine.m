@@ -1,6 +1,4 @@
 classdef gameEngine < handle
-    
-    % properties of poker game engine
     properties
         % All players and thier apps
         player_0
@@ -10,9 +8,7 @@ classdef gameEngine < handle
         player_2
         player_2_UI
         
-        % store the instance of poker game rule
-        rule
-        
+        rule            % store the instance of poker game rule
         landlord = -1   % -1 -> defalut        
         whoseTurn = -1; % -1 -> defalut
         passNum = 0;    % passNum should not more than 2
@@ -41,10 +37,7 @@ classdef gameEngine < handle
         cards_type_0;
         cards_value_0;
         cards_type_1;
-        % -2 -> not found; -1 -> unkown type
         cards_value_1;
-        
-        
     end
     
     % methods that game engine has:
@@ -338,8 +331,6 @@ classdef gameEngine < handle
                 eg.player_2.currUI.PassButton.Visible = false;
             end
         end
-        %
-        
         % start game with following process
         function startGame(eg)
             % Start: Enable the Shot and Pass button
