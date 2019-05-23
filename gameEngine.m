@@ -8,7 +8,7 @@ classdef gameEngine < handle
         player_2
         player_2_UI
         
-        rule            % store the instance of poker game rule
+        rule            % the instance of poker game rule
         landlord = -1   % -1 -> defalut        
         whoseTurn = -1; % -1 -> defalut
         passNum = 0;    % passNum should not more than 2
@@ -193,24 +193,33 @@ classdef gameEngine < handle
             % Card num and Avatar 
             if (eg.isStart == true)                
                 eg.player_0.currUI.CardNum_currplayer.Text = num2str(eg.player_0.currUI.currPlayer.cardNum);
+                eg.player_0.currUI.CardNum_currplayer.FontSize = 20;
                 eg.player_0.currUI.avatar_currplayer.ImageSource = eg.player_0.currUI.currPlayer.avatar;
                 eg.player_0.currUI.CardNum_player_1.Text = num2str(eg.player_0.currUI.player_1.cardNum);
+                eg.player_0.currUI.CardNum_player_1.FontSize = 20;
                 eg.player_0.currUI.avatar_player_1.ImageSource = eg.player_0.currUI.player_1.avatar;
                 eg.player_0.currUI.CardNum_player_2.Text = num2str(eg.player_0.currUI.player_2.cardNum);
+                eg.player_0.currUI.CardNum_player_2.FontSize = 20;
                 eg.player_0.currUI.avatar_player_2.ImageSource = eg.player_0.currUI.player_2.avatar;
                 drawnow;
                 eg.player_1.currUI.CardNum_currplayer.Text = num2str(eg.player_1.currUI.currPlayer.cardNum);
+                eg.player_1.currUI.CardNum_currplayer.FontSize = 20;
                 eg.player_1.currUI.avatar_currplayer.ImageSource = eg.player_1.currUI.currPlayer.avatar;
                 eg.player_1.currUI.CardNum_player_1.Text = num2str(eg.player_1.currUI.player_1.cardNum);
+                eg.player_1.currUI.CardNum_player_1.FontSize = 20;
                 eg.player_1.currUI.avatar_player_1.ImageSource = eg.player_1.currUI.player_1.avatar;
                 eg.player_1.currUI.CardNum_player_2.Text = num2str(eg.player_1.currUI.player_2.cardNum);
+                eg.player_1.currUI.CardNum_player_2.FontSize = 20;
                 eg.player_1.currUI.avatar_player_2.ImageSource = eg.player_1.currUI.player_2.avatar;
                 drawnow;
                 eg.player_2.currUI.CardNum_currplayer.Text = num2str(eg.player_2.currUI.currPlayer.cardNum);
+                eg.player_2.currUI.CardNum_currplayer.FontSize = 20;
                 eg.player_2.currUI.avatar_currplayer.ImageSource = eg.player_2.currUI.currPlayer.avatar;
                 eg.player_2.currUI.CardNum_player_1.Text = num2str(eg.player_2.currUI.player_1.cardNum);
+                eg.player_2.currUI.CardNum_player_1.FontSize = 20;
                 eg.player_2.currUI.avatar_player_1.ImageSource = eg.player_2.currUI.player_1.avatar;
                 eg.player_2.currUI.CardNum_player_2.Text = num2str(eg.player_2.currUI.player_2.cardNum);
+                eg.player_2.currUI.CardNum_player_2.FontSize = 20;
                 eg.player_2.currUI.avatar_player_2.ImageSource = eg.player_2.currUI.player_2.avatar;
                 drawnow;
                 % display card
@@ -404,5 +413,11 @@ classdef gameEngine < handle
                 eg.player_2.currUI.winLabel.Visible = true;
             end
         end
+        % control the BGM
+        function bgm(eg)
+            % pass
+        end
+ 
+        % 
     end
 end
