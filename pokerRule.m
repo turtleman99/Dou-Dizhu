@@ -14,17 +14,17 @@ classdef pokerRule < handle
         function index_of(pkRule, typeName, ele)
             array = getfield(pkRule.cardRule, typeName);
             if (~(length(array{1}) == length(ele)))
-                a = 'Inside of index_of'
-                pkRule.compare_result = -2;
+                % a = 'Inside of index_of'
+                pkRule.compare_result = -2; % not found
                 return;
             end
-            % pkRule.gameEngine.cards_value_1 = 0;
+
             len = length(array);
             for indx = 1:len
                 if (strcmp(array{indx}, ele))
-                    pkRule.gameEngine.cards_value_1 = indx;
-                    pkRule.gameEngine.cards_type_1 = typeName;
-                    pkRule.compare_result = -3;
+                    pkRule.gameEngine.cards_value_selected = indx;
+                    pkRule.gameEngine.cards_type_selected = typeName;
+                    pkRule.compare_result = -3; % found
                     return;
                 end
             end
@@ -50,60 +50,64 @@ classdef pokerRule < handle
         function cards_value(pkRule, cards)
             % check if rocket
             if (strcmp(cards, 'wW'))
-                pkRule.gameEngine.cards_type_1 = 'rocket';
-                pkRule.gameEngine.cards_value_1 = 2000;
+                pkRule.gameEngine.cards_type_selected = 'rocket';
+                pkRule.gameEngine.cards_value_selected = 2000;
                 return;
             end
             % check if bomb
             pkRule.index_of('bomb', cards); 
             if (pkRule.compare_result == -3)    % found
-                pkRule.gameEngine.cards_type_1 = 'bomb';
-                pkRule.gameEngine.cards_value_1 = 1000 + pkRule.gameEngine.cards_value_1;
+                pkRule.gameEngine.cards_type_selected = 'bomb';
+                pkRule.gameEngine.cards_value_selected = 1000 + pkRule.gameEngine.cards_value_selected;
                 return;
             end
             % normal types
             pkRule.card_type(cards);
         end
         % compare the poker hands and set compare value
-        function compare_poker(pkRule, preCards, currCards)
+        function compare_poker(pkRule, preCards, selectedCards)
             
             % Before compareing, reset pkRule.compare_result;
             pkRule.compare_result = 0;
             
             % if one of turns is empty
-            % TD: if pass two turns
-            [rn, cardsNum] = size(currCards);
-            currCards_str = [];
+            % TD: if pass two turns   -> done
+            [rn, cardsNum] = size(selectedCards);
+            selectedCards_str = [];
             for i = 1 : cardsNum
-                currCards_str = [currCards_str, currCards{1, i}];
+                selectedCards_str = [selectedCards_str, selectedCards{1, i}];
             end
-            % print compared cards_str 
-            currCards_str
-            pkRule.cards_value(currCards_str);
+            %######################### debugging #######################
+            selectedCards_str
+            %######################### debugging #######################
             
-            if (or(isempty(preCards), isempty(currCards)))
-                if isequal(preCards, currCards)
-                    c = 'c'
-                    pkRule.compare_result = 0;
+            pkRule.cards_value(selectedCards_str);
+            
+            if (or(isempty(preCards), isempty(selectedCards)))
+                if isequal(preCards, selectedCards)
+                    % c = 'c'
+                    pkRule.compare_result = 0; % not bigger
                     return;
                 end
                 if (isempty(preCards))
-                    pkRule.compare_result = 1;
+                    pkRule.compare_result = 1; % bigger
                     return;
                 end
-                if (isempty(currCards))
-                   pkRule.compare_result = 0;
+                if (isempty(selectedCards))
+                   pkRule.compare_result = 0;  % not bigger
                    return;
                 end
             end        
             
-            if (strcmp(pkRule.gameEngine.cards_type_1, pkRule.gameEngine.cards_type_0))
+            if (strcmp(pkRule.gameEngine.cards_type_selected, pkRule.gameEngine.cards_type_0))
                 % care about the definition
-                pkRule.compare_result = pkRule.gameEngine.cards_value_1 - pkRule.gameEngine.cards_value_0; 
+                pkRule.compare_result = pkRule.gameEngine.cards_value_selected - pkRule.gameEngine.cards_value_0; 
                 return;
             end
-            if (pkRule.gameEngine.cards_value_1 >= 1000)
-                pkRule.compare_result = 1;
+            if (pkRule.gameEngine.cards_value_selected >= 1000)
+                if (pkRule.gameEngine.cards_value_0 < pkRule.gameEngine.cards_value_selected)
+                    pkRule.compare_result = 1;
+                end
                 return;
             else
                 d = 'Not bigger!'

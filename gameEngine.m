@@ -31,17 +31,18 @@ classdef gameEngine < handle
         % row 3: img source
         % row 4l num
         cards_shotted_0 = {};
-        cards_shotted_1 = {};
         cards_selected = {};
-        % used to compare curr turn and last turn 
+        % used to compare selected cards with last turn's 
         cards_type_0;
         cards_value_0;
-        cards_type_1;
-        cards_value_1;
+        cards_type_selected;
+        cards_value_selected;
         
         % for bgm
         bg_room = load('./resourse/audio_mat/bg_room.mat');
         bg_game = load('./resourse/audio_mat/bg_game.mat');
+        deal = load('./resourse/audio_mat/deal.mat');
+        end_win = load('./resourse/audio_mat/end_win.mat');
         player;        % player use to play bgm  
     end
     
@@ -97,11 +98,11 @@ classdef gameEngine < handle
                 eg.isEnd = true;
                 eg.endGame;
             elseif (eg.player_1.cardNum == 0)
-                g.winner = eg.player_1.role;
+                eg.winner = eg.player_1.role;
                 eg.isEnd = true;
                 eg.endGame;
             elseif (eg.player_2.cardNum == 0)
-                g.winner = eg.player_2.role;
+                eg.winner = eg.player_2.role;
                 eg.isEnd = true;
                 eg.endGame;
             end
@@ -288,7 +289,7 @@ classdef gameEngine < handle
         end
         % Display the shotted cards in other players' UIs
         function dispShotCards(eg)
-            [nr, shotNum] = size(eg.cards_shotted_1);
+            [nr, shotNum] = size(eg.cards_shotted_0);
             mid = (shotNum + 1)/2;
             % invisble last turn card
             for i = 1 : 20
@@ -298,11 +299,11 @@ classdef gameEngine < handle
             end
             % Then display shotted cards in three UIs
             for i = 1 : shotNum
-                eg.player_0.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_1{3, shotNum - i + 1};
+                eg.player_0.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_0{3, shotNum - i + 1};
                 eg.player_0.currUI.currDispCards{1, fix(10.5-(i-mid))}.Visible = true;
-                eg.player_1.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_1{3, shotNum - i + 1};
+                eg.player_1.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_0{3, shotNum - i + 1};
                 eg.player_1.currUI.currDispCards{1, fix(10.5-(i-mid))}.Visible = true;
-                eg.player_2.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_1{3, shotNum - i + 1};
+                eg.player_2.currUI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource = eg.cards_shotted_0{3, shotNum - i + 1};
                 eg.player_2.currUI.currDispCards{1, fix(10.5-(i-mid))}.Visible = true;
             end
         end
@@ -381,7 +382,13 @@ classdef gameEngine < handle
                 eg.player_0.currUI.ShotButton.Visible = false; 
                 eg.player_0.currUI.PassButton.Visible = false;
             end
-
+            
+            eg.player = audioplayer(eg.deal.deal, eg.deal.deal_Fs);
+            eg.player.Tag = 'deal';
+            if (isplaying(eg.player) == false)
+                play(eg.player); 
+            end
+            
             eg.displayCard;
             eg.update;
             eg.bgm;
@@ -418,18 +425,39 @@ classdef gameEngine < handle
                 eg.player_1.currUI.winLabel.Visible = true;
                 eg.player_2.currUI.winLabel.Text = msg;
                 eg.player_2.currUI.winLabel.Visible = true;
+                
+                eg.isEnd = false;
+                
+                % BGM
+                eg.player = audioplayer(eg.end_win.end_win, eg.end_win.end_win_Fs);
+                eg.player.Tag = 'end_win';
+                if (isplaying(eg.player) == false)
+                    play(eg.player); 
+                end
             end
         end
         % control the BGM
         function bgm(eg)
             if (eg.isStart == false)
-                eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
-                eg.player.Tag = 'room';
-                if (isplaying(eg.player) == false)
-                    play(eg.player); 
+                if (isempty(eg.player) == true)
+                    eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
+                    eg.player.Tag = 'room';
+                    if (isplaying(eg.player) == false)
+                        play(eg.player); 
+                    end
+                elseif (eg.player.Tag == 'deal')
+                    eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
+                    eg.player.Tag = 'room';
+                    if (isplaying(eg.player) == false)
+                        play(eg.player); 
+                    end
+                elseif (eg.player.Tag == 'room')
+                    if (isplaying(eg.player) == false)
+                        play(eg.player); 
+                    end
                 end
             elseif (eg.isStart == true)
-                if (eg.player.Tag == 'room')
+                if (or(eg.player.Tag == 'room', eg.player.Tag == 'deal'))
                     eg.player = audioplayer(eg.bg_game.bg_game, eg.bg_game.bg_game_Fs);
                     eg.player.Tag = 'play';
                 end
