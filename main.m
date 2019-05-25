@@ -37,6 +37,7 @@ rule = pokerRule;
 
 % Create instance of 'gameEngine'
 ge = gameEngine;
+ge.bgm();
 ge.player_0 = player_0;
 ge.player_1 = player_1;
 ge.player_2 = player_2;
@@ -48,6 +49,8 @@ rule.gameEngine = ge;
 player_0.currUI.gameEngine = ge;
 player_1.currUI.gameEngine = ge;
 player_2.currUI.gameEngine = ge;
+
+
 
 
 

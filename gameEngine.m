@@ -15,7 +15,7 @@ classdef gameEngine < handle
         cardNum = 54;   % Total card Num = 54       
         winner = -1;    % winner=-1 -> have not determined winner
         isEnd = false;  % determine whether to end the game
-        isStart = false; % determine whether start the game
+        isStart = false; % determine whether to start the game
         
         % In order to sychronize, Distribute cards as soon as one player
         % push 'Ready'. Then create cards compoents and invisible them
@@ -38,6 +38,11 @@ classdef gameEngine < handle
         cards_value_0;
         cards_type_1;
         cards_value_1;
+        
+        % for bgm
+        bg_room = load('./resourse/audio_mat/bg_room.mat');
+        bg_game = load('./resourse/audio_mat/bg_game.mat');
+        player;        % player use to play bgm  
     end
     
     % methods that game engine has:
@@ -224,12 +229,13 @@ classdef gameEngine < handle
                 drawnow;
                 % display card
                 eg.displayCard;
+                eg.bgm;
             end
             % TODO: 
-            % 1. chenck if cardNum and avatar are matched
+            % 1. chenck if cardNum and avatar are matched -> done
             % 2. update card display
         end
-        % display handcards in three UIs(create components)
+        % display handcards in three UIs
         function displayCard(eg)
             % player_0 UI
             if (eg.landlord == 0)
@@ -378,6 +384,7 @@ classdef gameEngine < handle
 
             eg.displayCard;
             eg.update;
+            eg.bgm;
         end
         % End game with following process
         function endGame(eg)
@@ -415,9 +422,23 @@ classdef gameEngine < handle
         end
         % control the BGM
         function bgm(eg)
-            % pass
+            if (eg.isStart == false)
+                eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
+                eg.player.Tag = 'room';
+                if (isplaying(eg.player) == false)
+                    play(eg.player); 
+                end
+            elseif (eg.isStart == true)
+                if (eg.player.Tag == 'room')
+                    eg.player = audioplayer(eg.bg_game.bg_game, eg.bg_game.bg_game_Fs);
+                    eg.player.Tag = 'play';
+                end
+                if (isplaying(eg.player) == false)   
+                    play(eg.player); 
+                end
+            end            
         end
- 
+             
         % 
     end
 end
