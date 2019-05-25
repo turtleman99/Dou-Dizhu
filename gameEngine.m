@@ -251,6 +251,7 @@ classdef gameEngine < handle
                     x = 565 + (temp_index - mid) * 32;
                     eg.player_0.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
                     eg.player_0.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                    eg.player_0.currUI.currPlayer.cards_img{2, i} = false; % not selected
                     temp_index = temp_index + 1;
                 end
             end
@@ -267,6 +268,7 @@ classdef gameEngine < handle
                     x = 565 + (temp_index - mid) * 32;
                     eg.player_1.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
                     eg.player_1.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                    eg.player_1.currUI.currPlayer.cards_img{2, i} = false; % not selected
                     temp_index = temp_index + 1;
                 end
             end
@@ -283,6 +285,7 @@ classdef gameEngine < handle
                     x = 565 + (temp_index - mid) * 32;
                     eg.player_2.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
                     eg.player_2.currUI.currPlayer.cards_img{1, i}.Visible = true;
+                    eg.player_2.currUI.currPlayer.cards_img{2, i} = false; % not selected
                     temp_index = temp_index + 1;
                 end
             end
@@ -309,42 +312,56 @@ classdef gameEngine < handle
         end
         % decide whose turn to shot cards
         function nextTurn(eg)
-            if (eg.player_0.currUI.currPlayer.myTurn == true)
-                eg.player_1.currUI.currPlayer.myTurn = true;
-                eg.player_1.currUI.ShotButton.Visible = true; 
-                eg.player_1.currUI.PassButton.Visible = true;
-                
-                eg.player_2.currUI.currPlayer.myTurn = false;
-                eg.player_2.currUI.ShotButton.Visible = false; 
-                eg.player_2.currUI.PassButton.Visible = false;
-                
-                eg.player_0.currUI.currPlayer.myTurn = false;
-                eg.player_0.currUI.ShotButton.Visible = false; 
-                eg.player_0.currUI.PassButton.Visible = false;
-            elseif (eg.player_1.currUI.currPlayer.myTurn == true)
-                eg.player_2.currUI.currPlayer.myTurn = true;
-                eg.player_2.currUI.ShotButton.Visible = true; 
-                eg.player_2.currUI.PassButton.Visible = true;
-                
-                eg.player_0.currUI.currPlayer.myTurn = false;
-                eg.player_0.currUI.ShotButton.Visible = false; 
-                eg.player_0.currUI.PassButton.Visible = false;
-                
-                eg.player_1.currUI.currPlayer.myTurn = false;
-                eg.player_1.currUI.ShotButton.Visible = false; 
-                eg.player_1.currUI.PassButton.Visible = false;
-            elseif (eg.player_2.currUI.currPlayer.myTurn == true)
-                eg.player_0.currUI.currPlayer.myTurn = true;
-                eg.player_0.currUI.ShotButton.Visible = true; 
-                eg.player_0.currUI.PassButton.Visible = true;
-                
-                eg.player_1.currUI.currPlayer.myTurn = false;
-                eg.player_1.currUI.ShotButton.Visible = false; 
-                eg.player_1.currUI.PassButton.Visible = false;
-                
-                eg.player_2.currUI.currPlayer.myTurn = false;
-                eg.player_2.currUI.ShotButton.Visible = false; 
-                eg.player_2.currUI.PassButton.Visible = false;
+            if (eg.isEnd == false)
+                if (eg.player_0.currUI.currPlayer.myTurn == true)
+                    eg.player_1.currUI.currPlayer.myTurn = true;
+                    eg.player_1.currUI.ShotButton.Visible = true; 
+                    eg.player_1.currUI.PassButton.Visible = true;
+
+                    eg.player_2.currUI.currPlayer.myTurn = false;
+                    eg.player_2.currUI.ShotButton.Visible = false; 
+                    eg.player_2.currUI.PassButton.Visible = false;
+
+                    eg.player_0.currUI.currPlayer.myTurn = false;
+                    eg.player_0.currUI.ShotButton.Visible = false; 
+                    eg.player_0.currUI.PassButton.Visible = false;
+
+                    eg.cards_selected = {};
+                    eg.cards_type_selected = '';
+                    eg.cards_value_selected = -2;
+                elseif (eg.player_1.currUI.currPlayer.myTurn == true)
+                    eg.player_2.currUI.currPlayer.myTurn = true;
+                    eg.player_2.currUI.ShotButton.Visible = true; 
+                    eg.player_2.currUI.PassButton.Visible = true;
+
+                    eg.player_0.currUI.currPlayer.myTurn = false;
+                    eg.player_0.currUI.ShotButton.Visible = false; 
+                    eg.player_0.currUI.PassButton.Visible = false;
+
+                    eg.player_1.currUI.currPlayer.myTurn = false;
+                    eg.player_1.currUI.ShotButton.Visible = false; 
+                    eg.player_1.currUI.PassButton.Visible = false;
+
+                    eg.cards_selected = {};
+                    eg.cards_type_selected = '';
+                    eg.cards_value_selected = -2;
+                elseif (eg.player_2.currUI.currPlayer.myTurn == true)
+                    eg.player_0.currUI.currPlayer.myTurn = true;
+                    eg.player_0.currUI.ShotButton.Visible = true; 
+                    eg.player_0.currUI.PassButton.Visible = true;
+
+                    eg.player_1.currUI.currPlayer.myTurn = false;
+                    eg.player_1.currUI.ShotButton.Visible = false; 
+                    eg.player_1.currUI.PassButton.Visible = false;
+
+                    eg.player_2.currUI.currPlayer.myTurn = false;
+                    eg.player_2.currUI.ShotButton.Visible = false; 
+                    eg.player_2.currUI.PassButton.Visible = false;
+
+                    eg.cards_selected = {};
+                    eg.cards_type_selected = '';
+                    eg.cards_value_selected = -2;
+                end
             end
         end
         % start game with following process
@@ -407,12 +424,15 @@ classdef gameEngine < handle
                 eg.player_0.currUI.ReadyButton.Visible = false;
                 eg.player_0.currUI.ShotButton.Visible = false;
                 eg.player_0.currUI.PassButton.Visible = false;
+                eg.player_0.currUI.Image.Visible = false;
                 eg.player_1.currUI.ReadyButton.Visible = false;
                 eg.player_1.currUI.ShotButton.Visible = false;
                 eg.player_1.currUI.PassButton.Visible = false;
+                eg.player_1.currUI.Image.Visible = false;
                 eg.player_2.currUI.ReadyButton.Visible = false;
                 eg.player_2.currUI.ShotButton.Visible = false;
                 eg.player_2.currUI.PassButton.Visible = false;
+                eg.player_2.currUI.Image.Visible = false;
                 if (eg.winner == 1)
                     msg = 'Peasants Win!';
                 elseif (eg.winner == 0)
@@ -425,8 +445,6 @@ classdef gameEngine < handle
                 eg.player_1.currUI.winLabel.Visible = true;
                 eg.player_2.currUI.winLabel.Text = msg;
                 eg.player_2.currUI.winLabel.Visible = true;
-                
-                eg.isEnd = false;
                 
                 % BGM
                 eg.player = audioplayer(eg.end_win.end_win, eg.end_win.end_win_Fs);
@@ -445,19 +463,19 @@ classdef gameEngine < handle
                     if (isplaying(eg.player) == false)
                         play(eg.player); 
                     end
-                elseif (eg.player.Tag == 'deal')
+                elseif (strcmp(eg.player.Tag ,'deal'))
                     eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
                     eg.player.Tag = 'room';
                     if (isplaying(eg.player) == false)
                         play(eg.player); 
                     end
-                elseif (eg.player.Tag == 'room')
+                elseif (strcmp(eg.player.Tag, 'room'))
                     if (isplaying(eg.player) == false)
                         play(eg.player); 
                     end
                 end
             elseif (eg.isStart == true)
-                if (or(eg.player.Tag == 'room', eg.player.Tag == 'deal'))
+                if (or(strcmp(eg.player.Tag,'room'), strcmp(eg.player.Tag,'deal')))
                     eg.player = audioplayer(eg.bg_game.bg_game, eg.bg_game.bg_game_Fs);
                     eg.player.Tag = 'play';
                 end

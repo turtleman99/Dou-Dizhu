@@ -16,6 +16,8 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         CardNum_currplayer  matlab.ui.control.Label
         winLabel            matlab.ui.control.Label
         Image               matlab.ui.control.Image
+        Label               matlab.ui.control.Label
+        Switch              matlab.ui.control.Switch
     end
 
     
@@ -31,14 +33,18 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
     methods (Access = private)
         
         function selectCard(app, src, event, indx)
-            if (app.currPlayer.cards_img{1, indx}.Position(1,2) == 22)
+            if ((app.currPlayer.cards_img{1, indx}.Position(1,2) == 22) && (app.currPlayer.myTurn == true))
                 app.currPlayer.cards_img{1, indx}.Position(1,2) = 52;
                 app.currPlayer.cards_img{2, indx} = true;
                 app.currPlayer.selectNum = app.currPlayer.selectNum + 1;
-            elseif (app.currPlayer.cards_img{1, indx}.Position(1,2) == 52)
+            elseif (app.currPlayer.cards_img{1, indx}.Position(1,2) == 22)
+                app.currPlayer.cards_img{1, indx}.Position(1,2) = 52;
+            elseif ((app.currPlayer.cards_img{1, indx}.Position(1,2) == 52) && (app.currPlayer.myTurn == true))
                 app.currPlayer.cards_img{1, indx}.Position(1,2) = 22;
                 app.currPlayer.cards_img{2, indx} = false;
                 app.currPlayer.selectNum = app.currPlayer.selectNum - 1;
+            elseif (app.currPlayer.cards_img{1, indx}.Position(1,2) == 52)
+                app.currPlayer.cards_img{1, indx}.Position(1,2) = 22;
             end
             app.gameEngine.bgm;
         end 
@@ -108,6 +114,11 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         % Button pushed function: ShotButton
         function ShotButtonPushed(app, event)
             
+            % init gameEngine's cards_selected
+            app.gameEngine.cards_selected = {};
+            app.gameEngine.cards_type_selected = '';
+            app.gameEngine.cards_value_selected = -2;
+        
             % compare selected cards and last turn cards
             if (app.currPlayer.role == 0)
                 up = 20;
@@ -115,8 +126,6 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 up = 17;
             end
             indx_selected = 1;
-            % init gameEngine's cards_selected
-            app.gameEngine.cards_selected = {};
             for i = 1: up
                 % if selected && not shotted
                 if (app.currPlayer.cards_img{2, i} == true && app.currPlayer.cards_img{3, i} == false) 
@@ -131,6 +140,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             % Compare
             app.gameEngine.rule.compare_poker(app.gameEngine.cards_shotted_0, app.gameEngine.cards_selected);
             
+            % bigger
             if (app.gameEngine.rule.compare_result > 0)
                 
                 %######################### debugging #######################
@@ -177,10 +187,12 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.gameEngine.cards_value_0 = app.gameEngine.cards_value_selected;
                 app.gameEngine.dispShotCards;
                 app.gameEngine.determineWinner;
-                app.currPlayer.shotOnce = false;
                 app.gameEngine.cards_selected = {};
+                app.gameEngine.cards_type_selected = '';
+                app.gameEngine.cards_value_selected = -2;
                 app.gameEngine.nextTurn;
             end
+            app.gameEngine.update;
             app.gameEngine.bgm;
         end
 
@@ -200,9 +212,40 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                     app.gameEngine.player_2.currUI.PassButton.Enable = false; 
                 end
             end
+            
+            % reset selected cards
+            if (app.currPlayer.role == 0)
+                up = 20;
+            elseif (app.currPlayer.role == 1)
+                up = 17;
+            end
+            indx_selected = 1;
+            for i = 1: up
+                % if selected && not shotted
+                if (app.currPlayer.cards_img{2, i} == true && app.currPlayer.cards_img{3, i} == false) 
+                    app.currPlayer.cards_img{2, i} = false;
+                    indx_selected = indx_selected + 1;
+                end
+            end
+            
             % when pass, clean the selected
             app.gameEngine.cards_selected = {};
+            app.currPlayer.selectNum = 0;
+            app.gameEngine.update;
             app.gameEngine.bgm;
+        end
+
+        % Value changed function: Switch
+        function SwitchValueChanged(app, event)
+                % TODO
+%             value = app.Switch.Value;
+%             if (value == 'On')
+%                 if (isplaying(app.gameEngine.player) == false)
+%                     resume(app.gameEngine.player);
+%                 end
+%             elseif (value == 'Off')
+%                 pause(app.gameEngine.player);
+%             end
         end
     end
 
@@ -309,6 +352,20 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.Image = uiimage(app.UIFigure);
             app.Image.Position = [379 436 515 225];
             app.Image.ImageSource = 'doudizhu.png';
+
+            % Create Label
+            app.Label = uilabel(app.UIFigure);
+            app.Label.HorizontalAlignment = 'center';
+            app.Label.FontColor = [1 1 1];
+            app.Label.Position = [1189.5 45 29 22];
+            app.Label.Text = 'ÿÿ';
+
+            % Create Switch
+            app.Switch = uiswitch(app.UIFigure, 'slider');
+            app.Switch.ValueChangedFcn = createCallbackFcn(app, @SwitchValueChanged, true);
+            app.Switch.FontColor = [1 1 1];
+            app.Switch.Position = [1181 82 45 20];
+            app.Switch.Value = 'On';
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';

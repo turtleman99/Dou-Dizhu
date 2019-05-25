@@ -9,7 +9,6 @@ classdef player < handle
         selectNum = 0;  % remember to reset
         isActive = false;
         myTurn = false;
-        shotOnce = false;
         currUI;         % its own UI
         
         % row 1 stores the components of cards;
