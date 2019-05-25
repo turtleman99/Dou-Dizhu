@@ -68,7 +68,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         end
 
         % Value changed function: ReadyButton
-        function ReadyButtonValueChanged(app, event)
+        function ReadyButtonValueChanged2(app, event)
             value = app.ReadyButton.Value;
             app.currPlayer.isActive = true;
             app.ReadyButton.Visible = false;
@@ -264,8 +264,11 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
 
             % Create ReadyButton
             app.ReadyButton = uibutton(app.UIFigure, 'state');
-            app.ReadyButton.ValueChangedFcn = createCallbackFcn(app, @ReadyButtonValueChanged, true);
+            app.ReadyButton.ValueChangedFcn = createCallbackFcn(app, @ReadyButtonValueChanged2, true);
+            app.ReadyButton.Icon = 'ready.png';
+            app.ReadyButton.IconAlignment = 'center';
             app.ReadyButton.Text = 'Ready';
+            app.ReadyButton.FontSize = 1;
             app.ReadyButton.Position = [400 320 110 50];
 
             % Create ShotButton
