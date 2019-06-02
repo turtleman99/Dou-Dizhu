@@ -16,6 +16,7 @@ classdef gameEngine < handle
         winner = -1;    % winner=-1 -> have not determined winner
         isEnd = false;  % determine whether to end the game
         isStart = false; % determine whether to start the game
+        isBGM = true;   % determine if play BGM
         
         % In order to sychronize, Distribute cards as soon as one player
         % push 'Ready'. Then create cards compoents and invisible them
@@ -417,7 +418,7 @@ classdef gameEngine < handle
             
             eg.player = audioplayer(eg.deal.deal, eg.deal.deal_Fs);
             eg.player.Tag = 'deal';
-            if (isplaying(eg.player) == false)
+            if (isplaying(eg.player) == false && (eg.isBGM == true))
                 play(eg.player); 
             end
             
@@ -475,17 +476,17 @@ classdef gameEngine < handle
                 if (isempty(eg.player) == true)
                     eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
                     eg.player.Tag = 'room';
-                    if (isplaying(eg.player) == false)
+                    if (isplaying(eg.player) == false && (eg.isBGM == true))
                         play(eg.player); 
                     end
                 elseif (strcmp(eg.player.Tag ,'deal'))
                     eg.player = audioplayer(eg.bg_room.bg_room, eg.bg_room.bg_room_Fs);
                     eg.player.Tag = 'room';
-                    if (isplaying(eg.player) == false)
+                    if (isplaying(eg.player) == false && (eg.isBGM == true))
                         play(eg.player); 
                     end
                 elseif (strcmp(eg.player.Tag, 'room'))
-                    if (isplaying(eg.player) == false)
+                    if (isplaying(eg.player) == false && (eg.isBGM == true))
                         play(eg.player); 
                     end
                 end
@@ -494,7 +495,7 @@ classdef gameEngine < handle
                     eg.player = audioplayer(eg.bg_game.bg_game, eg.bg_game.bg_game_Fs);
                     eg.player.Tag = 'play';
                 end
-                if (isplaying(eg.player) == false)   
+                if (isplaying(eg.player) == false && (eg.isBGM == true))   
                     play(eg.player); 
                 end
             end            

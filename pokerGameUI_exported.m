@@ -250,14 +250,22 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         % Value changed function: Switch
         function SwitchValueChanged(app, event)
                 % TODO
-%             value = app.Switch.Value;
-%             if (value == 'On')
-%                 if (isplaying(app.gameEngine.player) == false)
-%                     resume(app.gameEngine.player);
-%                 end
-%             elseif (value == 'Off')
-%                 pause(app.gameEngine.player);
-%             end
+            value = app.Switch.Value;
+            if (strcmp(value, 'On'))
+                if (isplaying(app.gameEngine.player) == false)
+                    resume(app.gameEngine.player);
+                end
+                app.gameEngine.player_0.currUI.Switch.Value = 'On';
+                app.gameEngine.player_1.currUI.Switch.Value = 'On';
+                app.gameEngine.player_2.currUI.Switch.Value = 'On';
+                app.gameEngine.isBGM = true;
+            elseif (strcmp(value, 'Off'))
+                pause(app.gameEngine.player);
+                app.gameEngine.player_0.currUI.Switch.Value = 'Off';
+                app.gameEngine.player_1.currUI.Switch.Value = 'Off';
+                app.gameEngine.player_2.currUI.Switch.Value = 'Off';
+                app.gameEngine.isBGM = false;
+            end
         end
     end
 
