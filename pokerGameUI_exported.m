@@ -35,16 +35,18 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         function selectCard(app, src, event, indx)
             if ((app.currPlayer.cards_img{1, indx}.Position(1,2) == 22) && (app.currPlayer.myTurn == true))
                 app.currPlayer.cards_img{1, indx}.Position(1,2) = 52;
-                app.currPlayer.cards_img{2, indx} = true;
-                app.currPlayer.selectNum = app.currPlayer.selectNum + 1;
+                app.currPlayer.cards_img{2, indx} = true;                   % is select
+                app.currPlayer.selectNum = app.currPlayer.selectNum + 1;    % selected #++
             elseif (app.currPlayer.cards_img{1, indx}.Position(1,2) == 22)
                 app.currPlayer.cards_img{1, indx}.Position(1,2) = 52;
+                app.currPlayer.selectNum = app.currPlayer.selectNum + 1;    % selected #++
             elseif ((app.currPlayer.cards_img{1, indx}.Position(1,2) == 52) && (app.currPlayer.myTurn == true))
                 app.currPlayer.cards_img{1, indx}.Position(1,2) = 22;
-                app.currPlayer.cards_img{2, indx} = false;
-                app.currPlayer.selectNum = app.currPlayer.selectNum - 1;
+                app.currPlayer.cards_img{2, indx} = false;                   % not select
+                app.currPlayer.selectNum = app.currPlayer.selectNum - 1;     % selected #--
             elseif (app.currPlayer.cards_img{1, indx}.Position(1,2) == 52)
                 app.currPlayer.cards_img{1, indx}.Position(1,2) = 22;
+                app.currPlayer.selectNum = app.currPlayer.selectNum - 1;     % selected #--
             end
             app.gameEngine.bgm;
         end 
@@ -360,14 +362,14 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.Label = uilabel(app.UIFigure);
             app.Label.HorizontalAlignment = 'center';
             app.Label.FontColor = [1 1 1];
-            app.Label.Position = [1189.5 45 29 22];
+            app.Label.Position = [1197 28 29 22];
             app.Label.Text = 'ÿÿ';
 
             % Create Switch
             app.Switch = uiswitch(app.UIFigure, 'slider');
             app.Switch.ValueChangedFcn = createCallbackFcn(app, @SwitchValueChanged, true);
             app.Switch.FontColor = [1 1 1];
-            app.Switch.Position = [1181 82 45 20];
+            app.Switch.Position = [1188 65 45 20];
             app.Switch.Value = 'On';
 
             % Show the figure after all components are created

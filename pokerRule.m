@@ -14,7 +14,6 @@ classdef pokerRule < handle
         function index_of(pkRule, typeName, ele)
             array = getfield(pkRule.cardRule, typeName);
             if (~(length(array{1}) == length(ele)))
-                % a = 'Inside of index_of'
                 pkRule.compare_result = -2; % not found
                 return;
             end
@@ -43,6 +42,7 @@ classdef pokerRule < handle
             end
             if (pkRule.compare_result == -2)
                 pkRule.compare_result = -1;
+                pkRule.gameEngine.update;
                 error('Unknown Card Type: %s', cards);
             end
         end
@@ -110,8 +110,8 @@ classdef pokerRule < handle
                 end
                 return;
             else
-                d = 'Not bigger!'
                 pkRule.compare_result = 0;
+                error('Not Bigger!');
                 return;
             end
         end

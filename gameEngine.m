@@ -43,7 +43,7 @@ classdef gameEngine < handle
         bg_game = load('./resourse/audio_mat/bg_game.mat');
         deal = load('./resourse/audio_mat/deal.mat');
         end_win = load('./resourse/audio_mat/end_win.mat');
-        player;        % player use to play bgm  
+        player;        % used to play bgm  
     end
     
     % methods that game engine has:
@@ -234,7 +234,7 @@ classdef gameEngine < handle
             end
             % TODO: 
             % 1. chenck if cardNum and avatar are matched -> done
-            % 2. update card display
+            % 2. update card display -> done
         end
         % display handcards in three UIs
         function displayCard(eg)
@@ -249,9 +249,14 @@ classdef gameEngine < handle
             for i = 1 : up
                 if (eg.player_0.currUI.currPlayer.cards_img{3, i} == false)
                     x = 565 + (temp_index - mid) * 32;
+%                     if (eg.player_0.currUI.currPlayer.cards_img{1, i}.Position(2) == 22)
                     eg.player_0.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
+%                     elseif (eg.player_0.currUI.currPlayer.cards_img{1, i}.Position(2) == 52)
+%                         eg.player_0.currUI.currPlayer.cards_img{1, i}.Position = [x, 52, 173, 256];
+%                     end
                     eg.player_0.currUI.currPlayer.cards_img{1, i}.Visible = true;
                     eg.player_0.currUI.currPlayer.cards_img{2, i} = false; % not selected
+                    eg.player_0.currUI.currPlayer.selectNum = 0;           % init select Num
                     temp_index = temp_index + 1;
                 end
             end
@@ -266,9 +271,14 @@ classdef gameEngine < handle
             for i = 1 : up
                 if (eg.player_1.currUI.currPlayer.cards_img{3, i} == false)
                     x = 565 + (temp_index - mid) * 32;
+%                     if (eg.player_1.currUI.currPlayer.cards_img{1, i}.Position(2) == 22)
                     eg.player_1.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
+%                     elseif (eg.player_1.currUI.currPlayer.cards_img{1, i}.Position(2) == 52)
+%                         eg.player_1.currUI.currPlayer.cards_img{1, i}.Position = [x, 52, 173, 256];
+%                     end
                     eg.player_1.currUI.currPlayer.cards_img{1, i}.Visible = true;
                     eg.player_1.currUI.currPlayer.cards_img{2, i} = false; % not selected
+                    eg.player_1.currUI.currPlayer.selectNum = 0;           % init select Num
                     temp_index = temp_index + 1;
                 end
             end
@@ -283,9 +293,14 @@ classdef gameEngine < handle
             for i = 1 : up
                 if (eg.player_2.currUI.currPlayer.cards_img{3, i} == false)
                     x = 565 + (temp_index - mid) * 32;
+%                     if (eg.player_2.currUI.currPlayer.cards_img{1, i}.Position(2) == 22)
                     eg.player_2.currUI.currPlayer.cards_img{1, i}.Position = [x, 22, 173, 256];
+%                     elseif (eg.player_2.currUI.currPlayer.cards_img{1, i}.Position(2) == 52)
+%                         eg.player_2.currUI.currPlayer.cards_img{1, i}.Position = [x, 52, 173, 256];
+%                     end
                     eg.player_2.currUI.currPlayer.cards_img{1, i}.Visible = true;
                     eg.player_2.currUI.currPlayer.cards_img{2, i} = false; % not selected
+                    eg.player_2.currUI.currPlayer.selectNum = 0;           % init select Num
                     temp_index = temp_index + 1;
                 end
             end
