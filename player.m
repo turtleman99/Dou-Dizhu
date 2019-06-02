@@ -22,6 +22,6 @@ classdef player < handle
     
     % methods that game engine has:
     methods
-        % Kinda empty at stage 0; easy for iteration
+        
     end
 end

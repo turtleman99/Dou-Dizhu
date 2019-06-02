@@ -10,7 +10,7 @@ classdef pokerRule < handle
     
     % methods of poker game rule
     methods
-        % return indx which represents magnitude
+        % find the indx, which represents magnitude, and cards type
         function index_of(pkRule, typeName, ele)
             array = getfield(pkRule.cardRule, typeName);
             if (~(length(array{1}) == length(ele)))
@@ -131,7 +131,6 @@ classdef pokerRule < handle
                     pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Text = 'Not Bigger!';
                     pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Visible = true;
                 end
-                error('Not Bigger!');
                 return;
             end
         end
