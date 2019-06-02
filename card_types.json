@@ -7,5 +7,5 @@
     "seq_trio2", "seq_trio3", "seq_trio4", "seq_trio5", "seq_trio6",
     "seq_trio_pair2", "seq_trio_pair3", "seq_trio_pair4", "seq_trio_pair5",
     "seq_trio_single2", "seq_trio_single3", "seq_trio_single4", "seq_trio_single5",
-    "bomb_single"]
+    "bomb_pair","bomb_single"]
 }
