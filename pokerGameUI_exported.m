@@ -18,6 +18,8 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
         Image               matlab.ui.control.Image
         Label               matlab.ui.control.Label
         Switch              matlab.ui.control.Switch
+        SystemInfoPanel     matlab.ui.container.Panel
+        UnknownTypeLabel    matlab.ui.control.Label
     end
 
     
@@ -193,8 +195,15 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.gameEngine.cards_type_selected = '';
                 app.gameEngine.cards_value_selected = -2;
                 app.gameEngine.nextTurn;
+            else
+                app.gameEngine.update;
+                app.gameEngine.bgm;
+                app.UnknownTypeLabel.Visible = true;
+                app.UnknownTypeLabel.Text = 'Not Bigger!';
+                error('Not Bigger!');
             end
             app.gameEngine.update;
+            app.UnknownTypeLabel.Visible = false;
             app.gameEngine.bgm;
         end
 
@@ -234,6 +243,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.gameEngine.cards_selected = {};
             app.currPlayer.selectNum = 0;
             app.gameEngine.update;
+            app.UnknownTypeLabel.Visible = false;
             app.gameEngine.bgm;
         end
 
@@ -371,6 +381,20 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
             app.Switch.FontColor = [1 1 1];
             app.Switch.Position = [1188 65 45 20];
             app.Switch.Value = 'On';
+
+            % Create SystemInfoPanel
+            app.SystemInfoPanel = uipanel(app.UIFigure);
+            app.SystemInfoPanel.Title = 'System Info';
+            app.SystemInfoPanel.Position = [1087 320 167 73];
+
+            % Create UnknownTypeLabel
+            app.UnknownTypeLabel = uilabel(app.SystemInfoPanel);
+            app.UnknownTypeLabel.HorizontalAlignment = 'center';
+            app.UnknownTypeLabel.FontSize = 16;
+            app.UnknownTypeLabel.FontWeight = 'bold';
+            app.UnknownTypeLabel.Visible = 'off';
+            app.UnknownTypeLabel.Position = [21 13 122 23];
+            app.UnknownTypeLabel.Text = 'Unknown Type!';
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';

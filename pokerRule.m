@@ -43,6 +43,16 @@ classdef pokerRule < handle
             if (pkRule.compare_result == -2)
                 pkRule.compare_result = -1;
                 pkRule.gameEngine.update;
+                if (pkRule.gameEngine.player_0.currUI.currPlayer.myTurn == true)
+                    pkRule.gameEngine.player_0.currUI.UnknownTypeLabel.Text = 'Unknown Type!';
+                    pkRule.gameEngine.player_0.currUI.UnknownTypeLabel.Visible = true;
+                elseif (pkRule.gameEngine.player_1.currUI.currPlayer.myTurn == true)
+                    pkRule.gameEngine.player_1.currUI.UnknownTypeLabel.Text = 'Unknown Type!';
+                    pkRule.gameEngine.player_1.currUI.UnknownTypeLabel.Visible = true;
+                elseif (pkRule.gameEngine.player_2.currUI.currPlayer.myTurn == true)
+                    pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Text = 'Unknown Type!';
+                    pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Visible = true;
+                end
                 error('Unknown Card Type: %s', cards);
             end
         end
@@ -111,6 +121,16 @@ classdef pokerRule < handle
                 return;
             else
                 pkRule.compare_result = 0;
+                if (pkRule.gameEngine.player_0.currUI.currPlayer.myTurn == true)
+                    pkRule.gameEngine.player_0.currUI.UnknownTypeLabel.Text = 'Not Bigger!';
+                    pkRule.gameEngine.player_0.currUI.UnknownTypeLabel.Visible = true;
+                elseif (pkRule.gameEngine.player_1.currUI.currPlayer.myTurn == true)
+                    pkRule.gameEngine.player_1.currUI.UnknownTypeLabel.Text = 'Not Bigger!';
+                    pkRule.gameEngine.player_1.currUI.UnknownTypeLabel.Visible = true;
+                elseif (pkRule.gameEngine.player_2.currUI.currPlayer.myTurn == true)
+                    pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Text = 'Not Bigger!';
+                    pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Visible = true;
+                end
                 error('Not Bigger!');
                 return;
             end
