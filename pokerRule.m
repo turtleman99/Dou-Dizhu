@@ -53,7 +53,7 @@ classdef pokerRule < handle
                     pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Text = 'Unknown Type!';
                     pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Visible = true;
                 end
-                error('Unknown Card Type: %s', cards);
+                % error('Unknown Card Type: %s', cards);
             end
         end
         % determine cards value: return cards type and value
@@ -92,6 +92,10 @@ classdef pokerRule < handle
             %######################### debugging #######################
             
             pkRule.cards_value(selectedCards_str);
+            
+            if (pkRule.compare_result == -1)
+                return;
+            end
             
             if (or(isempty(preCards), isempty(selectedCards)))
                 if isequal(preCards, selectedCards)

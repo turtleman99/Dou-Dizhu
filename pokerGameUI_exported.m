@@ -195,12 +195,19 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.gameEngine.cards_type_selected = '';
                 app.gameEngine.cards_value_selected = -2;
                 app.gameEngine.nextTurn;
+            elseif (app.gameEngine.rule.compare_result == -1)
+                app.gameEngine.update;
+                app.gameEngine.bgm;
+                app.UnknownTypeLabel.Visible = true;
+                app.UnknownTypeLabel.Text = 'Unkwon Type!';
+                return;
             else
                 app.gameEngine.update;
                 app.gameEngine.bgm;
                 app.UnknownTypeLabel.Visible = true;
                 app.UnknownTypeLabel.Text = 'Not Bigger!';
-                error('Not Bigger!');
+                return;
+                % error('Not Bigger!');
             end
             app.gameEngine.update;
             app.UnknownTypeLabel.Visible = false;
