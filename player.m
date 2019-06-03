@@ -7,13 +7,13 @@ classdef player < handle
         cards = {};     % store the distributed info from *.json
         cardNum = 0;
         selectNum = 0;  % remember to reset
-        isActive = false;
+        % isActive = false;
         myTurn = false;
         currUI;         % its own UI
         
         % row 1 stores the components of cards;
         % row 2 stores whether the card has selected;
-        % row 3 stores whether the cards has shotted;
+        % row 3 stores whether the cards has shot;
         % row 4 stores the str# of cards;
         % row 5 stores the lable 
         % row 6 stores the # of cards

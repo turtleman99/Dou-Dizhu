@@ -106,7 +106,7 @@ classdef gameEngine < handle
                 eg.endGame;
             end
         end
-        % Sort hand cards of players
+        % Sort hand cards of players, bubble sort implemented.
         function sortCard(eg, player)
             len = player.cardNum;
             for i = 1 : len
