@@ -7,7 +7,7 @@ classdef player < handle
         cards = {};     % store the distributed info from *.json
         cardNum = 0;
         selectNum = 0;  % remember to reset
-        % isActive = false;
+        isActive = false;
         myTurn = false;
         currUI;         % its own UI
         

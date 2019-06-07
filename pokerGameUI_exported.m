@@ -29,7 +29,8 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
          player_1
          player_2
          gameEngine
-         currDispCards = {}; % Only used to display shot cards
+         % Only used to display shot cards
+         currDispCards = {}; 
     end
     
     methods (Access = private)
@@ -199,7 +200,7 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.gameEngine.update;
                 app.gameEngine.bgm;
                 app.UnknownTypeLabel.Visible = true;
-                app.UnknownTypeLabel.Text = 'Unkwon Type!';
+                app.UnknownTypeLabel.Text = 'Unknwon Type!';
                 return;
             else
                 app.gameEngine.update;
