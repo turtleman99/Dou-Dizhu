@@ -191,7 +191,7 @@ classdef functionalTest < matlab.uitest.TestCase
             testCase.press(player_1_UI.ShotButton);
             
             testCase.verifyEqual(ge.winner,0);
-            close all;
+            clear
         end
         
         function Test2(testCase)
@@ -370,7 +370,6 @@ classdef functionalTest < matlab.uitest.TestCase
             testCase.press(player_2_UI.ShotButton);
             
             testCase.verifyEqual(ge.winner,1);
-            clear;
         end
     end
 end

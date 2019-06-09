@@ -1,4 +1,4 @@
-classdef gameEngine_Test1 < handle
+classdef gameEngine_fTest2 < handle
     properties
         % All players and thier apps
         player_0
@@ -59,7 +59,7 @@ classdef gameEngine_Test1 < handle
         % In 0 stage, random assign Role; -1-defult, 0-landlord, 1-peasant;
         function assignRole(eg)
             % eg.player_0.currUI.currPlayer.myTurn
-            eg.landlord = 1;
+            eg.landlord = 0;
             switch eg.landlord
                 case 0
                     eg.player_0.role = 0;
@@ -143,8 +143,7 @@ classdef gameEngine_Test1 < handle
         function distributeCards(eg)
             if (eg.isDistribute == false)
                 % Shuffle
-                order = [3 3 3 4 4 5 6 7 8 10 10 13 13 13 11 11 11 3 5 5 5 6 6 7 7 8 8 9 10 12 14 13 11 2,4 4 6 7 8 9 9 9 10 12 12 12 14 14 14 2 2 1 2 3];
-                length(order)
+                order = [3 3 4 4 7 8 10 12 14 14 13 13 13 11 11 11 0 3 3 5 5 5 5 7 7 8 8 9 9 10 12 14 11 2 4 4 6 6 6 6 7 8 9 9 10 10 12 12 14 2 2];
                 % distribute to all players
                 for i = 1:17
                     indx = order(i)+1;
@@ -163,13 +162,13 @@ classdef gameEngine_Test1 < handle
                 end
                 % distribute to landlord
                 if (eg.landlord == 0)
-                    eg.player_0.cards = [eg.player_0.cards, eg.cardsData{1}, eg.cardsData{2}, eg.cardsData{3}];
+                    eg.player_0.cards = [eg.player_0.cards, eg.cardsData{14}, eg.cardsData{3}, eg.cardsData{2}];
                     eg.player_0.cardNum = eg.player_0.cardNum + 3;
                 elseif (eg.landlord == 1)
-                    eg.player_1.cards = [eg.player_1.cards, eg.cardsData{1}, eg.cardsData{2}, eg.cardsData{3}];
+                    eg.player_1.cards = [eg.player_1.cards, eg.cardsData{14}, eg.cardsData{3}, eg.cardsData{2}];
                     eg.player_1.cardNum = eg.player_1.cardNum + 3;
                 elseif (eg.landlord == 2)
-                    eg.player_2.cards = [eg.player_2.cards, eg.cardsData{1}, eg.cardsData{2}, eg.cardsData{3}];
+                    eg.player_2.cards = [eg.player_2.cards, eg.cardsData{14}, eg.cardsData{3}, eg.cardsData{2}];
                     eg.player_2.cardNum = eg.player_2.cardNum + 3;
                 end
                 % sort the hand cards of players
