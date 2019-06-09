@@ -399,7 +399,7 @@ classdef gameEngine < handle
             elseif (eg.landlord == 1)
                 eg.player_1.currUI.ShotButton.Visible = true; 
                 eg.player_1.currUI.PassButton.Visible = true;
-                eg.player_2.currUI.PassButton.Enable = false;
+                eg.player_1.currUI.PassButton.Enable = false;
                 eg.player_0.currUI.ShotButton.Visible = false; 
                 eg.player_0.currUI.PassButton.Visible = false;
                 eg.player_2.currUI.ShotButton.Visible = false; 

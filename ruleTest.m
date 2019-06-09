@@ -60,8 +60,17 @@ classdef ruleTest < matlab.uitest.TestCase
             testCase.press(player_2_UI.ReadyButton);   
             
             % round 1
+            testCase.verifyEqual(player_1_UI.PassButton.Enable,'off'); %T1.7.1
+            
             [x,y] = ge.calcPosition(1,player_1);
+            
             testCase.press(player_1.currUI.UIFigure,[x,y]);
+            testCase.verifyEqual(player_1_UI.currPlayer.cards_img{1,1}.Position(1,2),52); %Tcover1.6.1.1
+            testCase.press(player_1.currUI.UIFigure,[x,y+30]);
+            testCase.verifyEqual(player_1_UI.currPlayer.cards_img{1,1}.Position(1,2),22); %Tcover1.6.1.2
+            
+            testCase.press(player_1.currUI.UIFigure,[x,y]);
+            
             [x,y] = ge.calcPosition(2,player_1);
             testCase.press(player_1.currUI.UIFigure,[x,y]);
             [x,y] = ge.calcPosition(3,player_1);
@@ -80,10 +89,12 @@ classdef ruleTest < matlab.uitest.TestCase
             testCase.press(player_2.currUI.UIFigure,[x,y]);
             testCase.press(player_2_UI.ShotButton);
             
-            testCase.press(player_0_UI.PassButton);
+            testCase.press(player_0_UI.PassButton); %T1.7.2
             testCase.press(player_1_UI.PassButton);
 
             % round 2
+            testCase.verifyEqual(player_2_UI.PassButton.Enable,'off'); %T1.7.3
+            
             n = [3,4,6,7,8,9,10,11];
             for k = 1:length(n)
                 [x,y] = ge.calcPosition(n(k),player_2);
@@ -97,6 +108,18 @@ classdef ruleTest < matlab.uitest.TestCase
                 testCase.press(player_0.currUI.UIFigure,[x,y]);
             end
             testCase.verifyThat(@()testCase.press(player_0_UI.ShotButton),Throws(''));
+            
+            testCase.verifyEqual(player_0_UI.UnknownTypeLabel.Text, 'Unknown Type!');
+            testCase.verifyEqual(player_0_UI.UnknownTypeLabel.Visible, 'on'); %Tcover1.6.2.1
+            
+            n = [9];
+            for k = 1:length(n)
+                [x,y] = ge.calcPosition(n(k),player_0);
+                testCase.press(player_0.currUI.UIFigure,[x,y]);
+            end
+            testCase.press(player_0_UI.ShotButton);
+            testCase.verifyEqual(player_0_UI.UnknownTypeLabel.Text, 'Not Bigger!');
+            testCase.verifyEqual(player_0_UI.UnknownTypeLabel.Visible, 'on'); %Tcover1.6.2.2
             
             n = [10,11,12,13,14,15,16,17];
             for k = 1:length(n)
@@ -152,6 +175,21 @@ classdef ruleTest < matlab.uitest.TestCase
             end
             testCase.press(player_1_UI.ShotButton);
             
+            [nr, shotNum] = size(ge.cards_shotted_0);
+            mid = (shotNum + 1)/2;
+            for i = 1 : shotNum
+                testCase.verifyEqual(player_0_UI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource, ge.cards_shotted_0{3, shotNum - i + 1});
+                testCase.verifyEqual(player_0_UI.currDispCards{1, fix(10.5-(i-mid))}.Visible, 'on');
+                testCase.verifyEqual(player_1_UI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource, ge.cards_shotted_0{3, shotNum - i + 1});
+                testCase.verifyEqual(player_1_UI.currDispCards{1, fix(10.5-(i-mid))}.Visible, 'on');
+                testCase.verifyEqual(player_2_UI.currDispCards{1, fix(10.5-(i-mid))}.ImageSource, ge.cards_shotted_0{3, shotNum - i + 1});
+                testCase.verifyEqual(player_2_UI.currDispCards{1, fix(10.5-(i-mid))}.Visible, 'on');
+            end
+            testCase.verifyEqual(player_1_UI.CardNum_currplayer.Text,'4');
+            testCase.verifyEqual(player_0_UI.CardNum_player_1.Text,'4');
+            testCase.verifyEqual(player_2_UI.CardNum_player_2.Text,'4');
+            %Tcover1.6.2.3
+            
             n = [5];
             for k = 1:length(n)
                 [x,y] = ge.calcPosition(n(k),player_2);
@@ -190,7 +228,9 @@ classdef ruleTest < matlab.uitest.TestCase
             end
             testCase.press(player_1_UI.ShotButton);
             
-            testCase.verifyEqual(ge.winner,0);
+            testCase.verifyEqual(ge.isEnd,true); %T1.8.1
+            testCase.verifyEqual(ge.winner,0); %Tcover1.8.2.1
+            
         end
         
         function ruleTest2(testCase)
@@ -368,7 +408,7 @@ classdef ruleTest < matlab.uitest.TestCase
             end
             testCase.press(player_2_UI.ShotButton);
             
-            testCase.verifyEqual(ge.winner,1);
+            testCase.verifyEqual(ge.winner,1); %Tcover1.8.2.2
         end
     end
 end
