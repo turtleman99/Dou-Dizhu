@@ -1,6 +1,6 @@
-classdef functionalTest < matlab.uitest.TestCase    
+classdef ruleTest < matlab.uitest.TestCase    
     methods (Test)
-        function Test1(testCase)
+        function ruleTest1(testCase)
             import matlab.unittest.TestCase
             import matlab.unittest.constraints.Throws
 
@@ -191,10 +191,9 @@ classdef functionalTest < matlab.uitest.TestCase
             testCase.press(player_1_UI.ShotButton);
             
             testCase.verifyEqual(ge.winner,0);
-            close all;
         end
         
-        function Test2(testCase)
+        function ruleTest2(testCase)
             import matlab.unittest.TestCase
             import matlab.unittest.constraints.Throws
 
@@ -370,7 +369,6 @@ classdef functionalTest < matlab.uitest.TestCase
             testCase.press(player_2_UI.ShotButton);
             
             testCase.verifyEqual(ge.winner,1);
-            clear;
         end
     end
 end
