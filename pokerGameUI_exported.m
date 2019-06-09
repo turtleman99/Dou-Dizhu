@@ -29,7 +29,8 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
          player_1
          player_2
          gameEngine
-         currDispCards = {}; % Only used to display shot cards
+         % Only used to display shot cards
+         currDispCards = {}; 
     end
     
     methods (Access = private)
@@ -195,12 +196,19 @@ classdef pokerGameUI_exported < matlab.apps.AppBase
                 app.gameEngine.cards_type_selected = '';
                 app.gameEngine.cards_value_selected = -2;
                 app.gameEngine.nextTurn;
+            elseif (app.gameEngine.rule.compare_result == -1)
+                app.gameEngine.update;
+                app.gameEngine.bgm;
+                app.UnknownTypeLabel.Visible = true;
+                app.UnknownTypeLabel.Text = 'Unknwon Type!';
+                return;
             else
                 app.gameEngine.update;
                 app.gameEngine.bgm;
                 app.UnknownTypeLabel.Visible = true;
                 app.UnknownTypeLabel.Text = 'Not Bigger!';
-                error('Not Bigger!');
+                return;
+                % error('Not Bigger!');
             end
             app.gameEngine.update;
             app.UnknownTypeLabel.Visible = false;

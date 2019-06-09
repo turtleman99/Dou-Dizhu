@@ -26,11 +26,9 @@ classdef gameEngine < handle
         % import cards data
         cardsData = transpose(struct2cell(jsondecode(fileread('cards.json'))));
         
-        % store the cards that has shotted: 0 -> last turn, 1-> curr turn
-        % row 1: str num
-        % row 2: lable
-        % row 3: img source
-        % row 4l num
+        % store the cards that has shotted: 0 -> last turn
+        % row 1: str num % row 2: lable
+        % row 3: img source % row 4 num
         cards_shotted_0 = {};
         cards_selected = {};
         % used to compare selected cards with last turn's 
@@ -108,7 +106,7 @@ classdef gameEngine < handle
                 eg.endGame;
             end
         end
-        % Sort hand cards of players
+        % Sort hand cards of players, bubble sort implemented.
         function sortCard(eg, player)
             len = player.cardNum;
             for i = 1 : len
@@ -500,7 +498,5 @@ classdef gameEngine < handle
                 end
             end            
         end
-             
-        % 
     end
 end
