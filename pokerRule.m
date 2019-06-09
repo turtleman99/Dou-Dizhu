@@ -3,7 +3,7 @@ classdef pokerRule < handle
     properties
         % 'rocket', 'bomb',
         cardType = ["single", "pair", "trio", "trio_pair", "trio_single","seq_single5", "seq_single6", "seq_single7", "seq_single8", "seq_single9", "seq_single10", "seq_single11","seq_single12","seq_pair3", "seq_pair4", "seq_pair5", "seq_pair6", "seq_pair7", "seq_pair8", "seq_pair9", "seq_pair10","seq_trio2", "seq_trio3", "seq_trio4", "seq_trio5", "seq_trio6","seq_trio_pair2", "seq_trio_pair3", "seq_trio_pair4", "seq_trio_pair5","seq_trio_single2", "seq_trio_single3", "seq_trio_single4", "seq_trio_single5", 'bomb_pair', "bomb_single"];
-        cardRule = jsondecode(fileread('rule.json'));
+        cardRule = jsondecode(fileread('rule_Test1.json'));
         compare_result % -3 -> found; -2 -> not found; -1 -> unkown type; 0 -> not bigger; >0 -> bigger
         gameEngine
     end
@@ -13,7 +13,7 @@ classdef pokerRule < handle
         % return indx which represents magnitude
         function index_of(pkRule, typeName, ele)
             array = getfield(pkRule.cardRule, typeName);
-            if (~(length(array{1}) == length(ele)))
+            if (~(length(array{1}) == length(ele)))    
                 pkRule.compare_result = -2; % not found
                 return;
             end
@@ -53,7 +53,7 @@ classdef pokerRule < handle
                     pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Text = 'Unknown Type!';
                     pkRule.gameEngine.player_2.currUI.UnknownTypeLabel.Visible = true;
                 end
-                error('Unknown Card Type: %s', cards);
+                error('Unknown Card Type!');
             end
         end
         % determine cards value: return cards type and value
@@ -88,7 +88,7 @@ classdef pokerRule < handle
                 selectedCards_str = [selectedCards_str, selectedCards{1, i}];
             end
             %######################### debugging #######################
-            selectedCards_str
+            selectedCards_str;
             %######################### debugging #######################
             
             pkRule.cards_value(selectedCards_str);
