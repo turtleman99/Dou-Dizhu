@@ -102,6 +102,8 @@ classdef ruleTest < matlab.uitest.TestCase
             end
             testCase.press(player_2_UI.ShotButton);
             
+            testCase.verifyEqual(ge.whoseTurn,0); %Tcover1.5.1.3
+            
             n = [9,10,11,12,13,14,15,16,17];
             for k = 1:length(n)
                 [x,y] = ge.calcPosition(n(k),player_0);
@@ -128,7 +130,12 @@ classdef ruleTest < matlab.uitest.TestCase
             end
             testCase.press(player_0_UI.ShotButton);
             
+            testCase.verifyEqual(ge.whoseTurn,1); %Tcover1.5.1.1
+            
             testCase.press(player_1_UI.PassButton);
+            
+            testCase.verifyEqual(ge.whoseTurn,2); %Tcover1.5.1.2
+            
             testCase.press(player_2_UI.PassButton);
             
             % round 3

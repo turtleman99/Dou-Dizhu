@@ -338,6 +338,7 @@ classdef gameEngine_fTest1 < handle
         function nextTurn(eg)
             if (eg.isEnd == false)
                 if (eg.player_0.currUI.currPlayer.myTurn == true)
+                    eg.whoseTurn = 1;
                     eg.player_1.currUI.currPlayer.myTurn = true;
                     eg.player_1.currUI.ShotButton.Visible = true; 
                     eg.player_1.currUI.PassButton.Visible = true;
@@ -354,6 +355,7 @@ classdef gameEngine_fTest1 < handle
                     eg.cards_type_selected = '';
                     eg.cards_value_selected = -2;
                 elseif (eg.player_1.currUI.currPlayer.myTurn == true)
+                    eg.whoseTurn = 2;
                     eg.player_2.currUI.currPlayer.myTurn = true;
                     eg.player_2.currUI.ShotButton.Visible = true; 
                     eg.player_2.currUI.PassButton.Visible = true;
@@ -370,6 +372,7 @@ classdef gameEngine_fTest1 < handle
                     eg.cards_type_selected = '';
                     eg.cards_value_selected = -2;
                 elseif (eg.player_2.currUI.currPlayer.myTurn == true)
+                    eg.whoseTurn = 0;
                     eg.player_0.currUI.currPlayer.myTurn = true;
                     eg.player_0.currUI.ShotButton.Visible = true; 
                     eg.player_0.currUI.PassButton.Visible = true;
