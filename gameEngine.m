@@ -134,7 +134,7 @@ classdef gameEngine < handle
         function distributeCards(eg)
             if (eg.isDistribute == false)
                 % Shuffle
-                order = randperm(54);
+                order = randperm(54)
                 % distribute to all players
                 for i = 1:17
                     indx = order(i);
@@ -152,14 +152,17 @@ classdef gameEngine < handle
                     eg.player_2.cardNum = eg.player_2.cardNum + 1;
                 end
                 % distribute to landlord
+                indx_1 = order(52);
+                indx_2 = order(53);
+                indx_3 = order(54);
                 if (eg.landlord == 0)
-                    eg.player_0.cards = [eg.player_0.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
+                    eg.player_0.cards = [eg.player_0.cards, eg.cardsData{indx_1}, eg.cardsData{indx_2}, eg.cardsData{indx_3}];
                     eg.player_0.cardNum = eg.player_0.cardNum + 3;
                 elseif (eg.landlord == 1)
-                    eg.player_1.cards = [eg.player_1.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
+                    eg.player_1.cards = [eg.player_1.cards, eg.cardsData{indx_1}, eg.cardsData{indx_2}, eg.cardsData{indx_3}];
                     eg.player_1.cardNum = eg.player_1.cardNum + 3;
                 elseif (eg.landlord == 2)
-                    eg.player_2.cards = [eg.player_2.cards, eg.cardsData{52}, eg.cardsData{53}, eg.cardsData{54}];
+                    eg.player_2.cards = [eg.player_2.cards, eg.cardsData{indx_1}, eg.cardsData{indx_2}, eg.cardsData{indx_3}];
                     eg.player_2.cardNum = eg.player_2.cardNum + 3;
                 end
                 % sort the hand cards of players
