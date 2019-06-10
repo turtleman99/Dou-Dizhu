@@ -134,7 +134,7 @@ classdef gameEngine < handle
         function distributeCards(eg)
             if (eg.isDistribute == false)
                 % Shuffle
-                order = randperm(54)
+                order = randperm(54);
                 % distribute to all players
                 for i = 1:17
                     indx = order(i);
