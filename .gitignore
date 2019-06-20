@@ -4,6 +4,9 @@
 
 # custom
 *.pages
+*.doc
+*.docx
+
 
 ### macOS ###
 # General
