@@ -26,14 +26,15 @@ Since the MATLAB is required by professor, I have to develop this app using a un
 ## TODO
 Within the limited develop time, the app is not very complete. At present, the app can support play _Dou Dizhu_ in one PC. Following is TODO list. If you can contribute to this Repo, I'll be really appreciated. 
 1. [ ] Log In
-2. [ ] “提示”
-3. [ ] 人-机模式
-4. [ ] 托管
-5. [ ] More voice effects during the playing: some audio files has put in `<./resourse/audio/>`.
-6. [ ] Timer
-7. [ ] Restart 
-8. [ ] Settings
-9. [ ] Database
+2. [ ] "叫地主"
+3. [ ] “提示”
+4. [ ] 人-机模式
+5. [ ] 托管
+6. [ ] More voice effects during the playing: some audio files has put in `<./resourse/audio/>`.
+7. [ ] Timer
+8. [ ] Restart 
+9. [ ] Settings
+10. [ ] Database
 ## Contributors
 + Requirtment: [Candlend](https://github.com/Candlend)
 + Deleloper: [Gideon Weng](https://github.com/GideonWeng)
